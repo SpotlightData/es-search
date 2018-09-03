@@ -13,11 +13,14 @@
     "build": "neutrino build"
   },
   "devDependencies": {
+    "@neutrinojs/env": "^8.3.0",
     "@neutrinojs/react-components": "^8.3.0",
     "neutrino": "^8.3.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-hot-loader": "^4.3.5"
+    "react-hot-loader": "^4.3.5",
+    "webpack": "3.12",
+    "webpack-dev-server": "^3.1.7"
   },
   "dependencies": {
     "source-map-support": "^0.5.9"
