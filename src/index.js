@@ -1,7 +1,18 @@
 import React from "react";
 import { render } from "react-dom";
+import { AppContainer } from "react-hot-loader";
 import Initial from "./components/Initial";
 
-const root = document.getElementById("root");
+const load = () =>
+  render(
+    <AppContainer>
+      <Initial />
+    </AppContainer>,
+    document.getElementById("root")
+  );
 
-render(<Initial />, root);
+if (module.hot) {
+  module.hot.accept("./components/Initial", load);
+}
+
+load();
