@@ -5,6 +5,9 @@
   "repository": "git@github.com:SpotlightData/search.git",
   "author": "Augustinas <augustinas@spotlightdata.co.uk>",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "start": "neutrino start",
     "build": "neutrino build"
