@@ -15,4 +15,6 @@ if (module.hot) {
   module.hot.accept("./components/Initial", load);
 }
 
+console.log(process.env);
+
 load();
