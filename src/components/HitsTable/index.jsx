@@ -33,12 +33,7 @@ export default class HitsTable extends SearchkitComponent {
   };
   static defaultProps = {
     hitsPerPage: 10,
-    sourceFilter: [
-      inLd("name"),
-      inLd("dateCreated"),
-      inLd("dateModified"),
-      inLd("fileSize")
-    ],
+    sourceFilter: ["name", "dateCreated", "dateModified", "fileSize"].map(inLd),
     formatRow: undefined,
     filter: undefined
   };
