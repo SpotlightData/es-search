@@ -21,7 +21,7 @@ export const stateFromQuery = key =>
     unwrapQuery,
     decodeObjString,
     obj => {
-      if (!obj.date1) {
+      if (typeof object !== "object" || !obj.date1) {
         return obj;
       }
       // A fix when when miliseconds are strings rather than numbers
@@ -35,14 +35,16 @@ export const stateFromQuery = key =>
     }
   );
 
-export function updateSKHistory(history, queryKey, newState) {
+export function updateSKHistory(history, queryKey, state) {
   const query = queryUrlToObject(history.location.search);
-  const prevState = query[queryKey] || {};
-  const objectUrl = encodeObjUrl(R.mergeDeepRight(prevState, newState));
+  const prevState = stateFromQuery(queryKey)(history.location.search);
+  const newState = R.mergeDeepRight(prevState, state);
+  const objectUrl = encodeObjUrl(newState);
 
   const newQuery = R.assoc(queryKey, wrapQuery(objectUrl), query);
-  return {
+  const historyState = {
     ...history.location,
     search: queryObjectToString(newQuery)
   };
+  return historyState;
 }

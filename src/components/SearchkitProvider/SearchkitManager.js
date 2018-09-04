@@ -38,7 +38,7 @@ export class SearchkitManager extends SkManager {
 
   performSearch(replaceState = false, notifyState = true) {
     const { history } = this;
-    if (notifyState && equals(this.accessors.getState(), this.state)) {
+    if (notifyState && R.equals(this.accessors.getState(), this.state)) {
       this.accessors.notifyStateChange(this.state);
     }
     const searchPromise = this._search();
