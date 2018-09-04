@@ -21,7 +21,7 @@ export class SearchkitManager extends SkManager {
           "X-Resource-Id": projectId,
           Authorization: `JWT ${token}`
         },
-        timeout: 20000,
+        timeout: 10000,
         searchOnLoad: true,
         useHistory: true,
         createHistory: () => history,
