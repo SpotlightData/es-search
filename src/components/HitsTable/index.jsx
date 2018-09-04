@@ -21,7 +21,7 @@ import Pagination from "../Pagination";
 
 import * as R from "ramda";
 
-const inLd = name => "_source.jsonLD." + name;
+const inLd = name => "jsonLD." + name;
 
 export default class HitsTable extends SearchkitComponent {
   static propTypes = {
@@ -36,7 +36,7 @@ export default class HitsTable extends SearchkitComponent {
     sourceFilter: [
       inLd("name"),
       inLd("dateCreated"),
-      inLd("dateModifier"),
+      inLd("dateModified"),
       inLd("fileSize")
     ],
     formatRow: undefined,
