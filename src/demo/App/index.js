@@ -29,10 +29,12 @@ export const App = () => {
   return (
     <div style={{ padding: "2em", width: "100%", height: "100%" }}>
       <Row>
-        <HitsTable
-          columns={columns}
-          filter={n => !Object.values(n).includes(undefined)}
-        />
+        <div style={{ width: 600 }}>
+          <HitsTable
+            columns={columns}
+            filter={n => !Object.values(n).includes(undefined)}
+          />
+        </div>
       </Row>
     </div>
   );

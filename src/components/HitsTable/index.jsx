@@ -32,7 +32,7 @@ export default class HitsTable extends SearchkitComponent {
     filter: func
   };
   static defaultProps = {
-    hitsPerPage: 20,
+    hitsPerPage: 10,
     sourceFilter: [
       inLd("name"),
       inLd("dateCreated"),
