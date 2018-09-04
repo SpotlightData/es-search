@@ -31,6 +31,7 @@
     "prop-types": "^15.6.2",
     "ramda": "^0.25.0",
     "react": "^16.4.2",
+    "react-jss": "^8.6.1",
     "searchkit": "^2.3.1-alpha.3"
   }
 }
