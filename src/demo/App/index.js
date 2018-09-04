@@ -6,7 +6,7 @@ import { Button } from "antd";
 
 import "antd/dist/antd.css";
 
-import { HitsTable } from "../../components";
+import { HitsTable, Search } from "../../components";
 import { defaultTimeFomat } from "@spotlightdata/nanowire-extensions/lib/helpers/table";
 
 const columns = [
@@ -20,7 +20,7 @@ const columns = [
     render: defaultTimeFomat
   },
   {
-    title: "File Type",
+    title: "File Size",
     dataIndex: "fileSize"
   }
 ];
@@ -28,14 +28,17 @@ const columns = [
 export const App = () => {
   return (
     <div style={{ padding: "2em", width: "100%", height: "100%" }}>
-      <Row>
-        <div style={{ width: 600 }}>
+      <div style={{ width: 600 }}>
+        <Row style={{ marginBottom: "1em" }}>
+          <Search queryFields={["jsonLD.name"]} />
+        </Row>
+        <Row>
           <HitsTable
             columns={columns}
             filter={n => !Object.values(n).includes(undefined)}
           />
-        </div>
-      </Row>
+        </Row>
+      </div>
     </div>
   );
 };

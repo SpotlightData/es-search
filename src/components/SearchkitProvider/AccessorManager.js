@@ -26,7 +26,7 @@ export class AccessorManager extends SKAccessorManager {
   getState() {
     return reduce(
       (state, accessor) => mergeDeepRight(state, accessor.getQueryObject()),
-      this.stateValue,
+      {},
       this.getStatefulAccessors()
     );
   }

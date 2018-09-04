@@ -41,15 +41,14 @@ export default class HitsTable extends SearchkitComponent {
   componentDidMount() {
     // Without timeout first search will ignore the hitsPerPage setting
     setTimeout(() => {
+      this.searchkit.addAccessor(
+        new SourceFilterAccessor(this.props.sourceFilter)
+      );
       this.searchkit
         .getAccessorByType(PageSizeAccessor)
         .setSize(this.props.hitsPerPage);
       this.searchkit.performSearch();
     }, 0);
-  }
-
-  defineAccessor() {
-    return new SourceFilterAccessor(this.props.sourceFilter);
   }
 
   format(task) {
