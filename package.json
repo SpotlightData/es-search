@@ -24,13 +24,16 @@
     "webpack": "3.12",
     "webpack-dev-server": "^3.1.7"
   },
-  "dependencies": {},
+  "dependencies": {
+    "qs": "^6.5.2"
+  },
   "peerDependencies": {
     "@spotlightdata/nanowire-extensions": "^1.1.3",
     "antd": "^3.9.1",
     "prop-types": "^15.6.2",
     "ramda": "^0.25.0",
     "react": "^16.4.2",
+    "react-jss": "^8.6.1",
     "searchkit": "^2.3.1-alpha.3"
   }
 }
