@@ -32,6 +32,7 @@ export default class Search extends SKSearchBox {
     const query = e.target.value;
     if (this.props.searchOnChange) {
       this.accessor.setQueryString(query);
+      this.forceUpdate();
       this.throttledSearch();
     } else {
       this.setState({ input: query });
