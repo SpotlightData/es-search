@@ -84,7 +84,7 @@ export default class HitsTable extends SearchkitComponent {
           dataSource={results}
           columns={columns}
           pagination={false}
-          loading={this.searchkit.loading}
+          loading={this.isLoading()}
         />
         <Row type="flex" justify="end" style={{ marginTop: "1em" }}>
           <Pagination pageSize={hitsPerPage} />
