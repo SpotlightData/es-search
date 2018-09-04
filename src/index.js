@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { AppContainer } from "react-hot-loader";
 import { SearchkitProvider } from "./components";
 import { BrowserRouter as Router, withRouter } from "react-router-dom";
+import { App } from "./demo/App";
 
 const providerProps = {
   url: process.env.URL,
@@ -16,7 +17,7 @@ const load = () => {
     <AppContainer>
       <Router key={Math.random()}>
         <SKProvider {...providerProps}>
-          <div>asdasd</div>
+          <App />
         </SKProvider>
       </Router>
     </AppContainer>,
@@ -25,7 +26,7 @@ const load = () => {
 };
 
 if (module.hot) {
-  module.hot.accept("./components", load);
+  module.hot.accept("./demo/App", load);
 }
 
 console.log(process.env);

@@ -6,11 +6,10 @@ import {
   queryObjectToString
 } from "@spotlightdata/nanowire-extensions/lib/helpers/request";
 import { AccessorManager } from "./AccessorManager";
-import { identity } from "../../helpers";
 import { stateFromQuery, updateSKHistory } from "./utils";
 
 export class SearchkitManager extends SkManager {
-  static create(options, customise = identity) {
+  static create(options, customise) {
     const { url, projectId, token, history, queryKey, myTab } = options;
     return new SearchkitManager(
       queryKey,
