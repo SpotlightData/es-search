@@ -21,7 +21,7 @@ export default class Pagination extends SearchkitComponent {
   };
 
   defineAccessor() {
-    return new PaginationAccessor("p");
+    return new PaginationAccessor("page");
   }
 
   getCurrentPage() {
