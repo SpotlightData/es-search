@@ -22,6 +22,22 @@ export default class Search extends SKSearchBox {
     id: "search"
   };
 
+  searchQuery(query) {
+    this.accessor.setQueryString(query);
+    this.searchkit.performSearch();
+    this.forceUpdate();
+  }
+
+  onChange(e) {
+    const query = e.target.value;
+    if (this.props.searchOnChange) {
+      this.accessor.setQueryString(query);
+      this.throttledSearch();
+    } else {
+      this.setState({ input: query });
+    }
+  }
+
   render() {
     const value = this.getValue();
     return (

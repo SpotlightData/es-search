@@ -53,10 +53,7 @@ export const stateFromQuery = key =>
 
 export function updateSKHistory(history, queryKey, state) {
   const query = queryUrlToObject(history.location.search);
-  const prevState = stateFromQuery(queryKey)(history.location.search);
   const search = R.pipe(
-    // Investigate if doing deepmerge won't cause issues in the future
-    R.mergeDeepRight(prevState),
     encodeObjUrl,
     str => R.assoc(queryKey, str, query),
     queryObjectToString
