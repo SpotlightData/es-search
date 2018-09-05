@@ -4,7 +4,7 @@ import { func } from "prop-types";
 import { Loading } from "@spotlightdata/nanowire-extensions/lib/components/ui/Loading";
 import { SearchkitComponent } from "searchkit";
 
-import { EntityAccessor } from "./shared/EntityAccessor";
+import { EntityAccessor } from "./EntityAccessor";
 
 export class MentionsLoader extends SearchkitComponent {
   static propTypes = {
