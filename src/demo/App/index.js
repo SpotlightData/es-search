@@ -6,7 +6,12 @@ import { Button } from "antd";
 
 import "antd/dist/antd.css";
 
-import { HitsTable, Search, DateFilter } from "../../components";
+import {
+  HitsTable,
+  Search,
+  DateFilter,
+  MentionsLoader
+} from "../../components";
 import { defaultTimeFomat } from "@spotlightdata/nanowire-extensions/lib/helpers/table";
 
 const columns = [
@@ -43,9 +48,12 @@ export const App = () => {
           </div>
         </Col>
         <Col span={12}>
-          <div style={{ width: 374 }}>
+          <Row style={{ width: 374 }}>
             <DateFilter />
-          </div>
+          </Row>
+          <Row>
+            <MentionsLoader render={list => console.log(list) || null} />
+          </Row>
         </Col>
       </Row>
     </div>
