@@ -1,20 +1,16 @@
 import React, { Component } from "react";
 import { func } from "prop-types";
 
-import { Loading } from "@spotlightdata/nanowire-extensions/lib/components/ui/Loading";
 import { SearchkitComponent } from "searchkit";
 
 import { EntityAccessor } from "./EntityAccessor";
 
 export class MentionsLoader extends SearchkitComponent {
   static propTypes = {
-    loadingComponent: func,
     render: func.isRequired
   };
 
-  static defaultProps = {
-    loadingComponent: Loading
-  };
+  static defaultProps = {};
 
   defineAccessor = EntityAccessor.create;
 
@@ -23,10 +19,11 @@ export class MentionsLoader extends SearchkitComponent {
   }
 
   render() {
-    const { loadingComponent: LoadingComp, render } = this.props;
-    if (this.isLoading()) {
-      return <LoadingComp />;
+    const { render } = this.props;
+    const entries = this.accessor.getEntities();
+    if (entries.length === 0) {
+      return null;
     }
-    return render(this.accessor.getEntities());
+    return render(entries);
   }
 }
