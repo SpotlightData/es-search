@@ -72,4 +72,8 @@ export class EntitiesCore {
       this.searchkit.removeAccessor(accessor);
     });
   }
+
+  get(key) {
+    return this.accessors[key];
+  }
 }

@@ -13,7 +13,6 @@ export class Mentions extends SearchkitComponent {
   }
 
   render() {
-    const { render } = this.props;
     return <MentionsRender entities={this.accessor.getEntities()} />;
   }
 }

@@ -17,7 +17,7 @@ export class EntityFilter extends PureComponent {
   };
 
   render() {
-    const { title, entity, collapsed, onClick } = this.props;
+    const { title, entity, collapsed, onClick, accessor } = this.props;
     return (
       <CollapsiblePanel header={title} collapsed={collapsed} onClick={onClick}>
         <Row style={{ marginBottom: "1em" }}>
@@ -30,14 +30,14 @@ export class EntityFilter extends PureComponent {
             queryBuilder={EntityQuery(entity)}
           />
         </Row>
+        <Row>
+          <EntityRefinementListFilter
+            entity={entity}
+            title={title}
+            accessor={accessor}
+          />
+        </Row>
       </CollapsiblePanel>
     );
-    // <Row>
-    //   <EntityRefinementListFilter
-    //     id={`${entity}_checked`}
-    //     entity={entity}
-    //     title={title}
-    //   />
-    // </Row>
   }
 }

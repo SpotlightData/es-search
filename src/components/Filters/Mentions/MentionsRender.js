@@ -33,6 +33,12 @@ export class MentionsRender extends SearchkitComponent {
     }
   }
 
+  componentWillUnmount() {
+    if (this.core) {
+      this.core.removeAccessors();
+    }
+  }
+
   createCore = (searchkit, items) => {
     if (!this.core) {
       this.core = EntitiesCore.create(searchkit);
@@ -63,6 +69,7 @@ export class MentionsRender extends SearchkitComponent {
             entity={key}
             onClick={this.toggleCollapse(key)}
             collapsed={this.isCollapsed(key)}
+            accessor={this.core.get(key)}
           />
         ))}
       </React.Fragment>
