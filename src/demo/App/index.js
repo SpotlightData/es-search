@@ -43,7 +43,7 @@ export const App = () => {
           </div>
         </Col>
         <Col span={12}>
-          <div style={{ width: 400 }}>
+          <div style={{ width: 374 }}>
             <DateFilter />
           </div>
         </Col>
