@@ -3,6 +3,7 @@ import * as R from "ramda";
 
 import { SearchkitComponent } from "searchkit";
 import { EntityFilter } from "../EntityFilter";
+import { EntitiesCore } from "../EntityFilter/Core";
 
 import { equals } from "ramda";
 import sid from "shortid";
@@ -13,7 +14,7 @@ const same = (fn, v1, v2) => fn(v1) === fn(v2);
 export class MentionsRender extends SearchkitComponent {
   state = { entities: {}, items: [] };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (
       !same(entityCount, this.props, prevProps) &&
       entityCount(this.props) !== 0
@@ -21,17 +22,25 @@ export class MentionsRender extends SearchkitComponent {
       const { items, entities } = this.props.entities.reduce(
         ({ items, entities }, { key }) => {
           return {
-            entities: R.assoc(key, false, entities),
+            entities: R.assoc(key, true, entities),
             items: [key, ...items]
           };
         },
         { items: [], entities: {} }
       );
-      this.setState({ items, entities }, () => {
-        this.searchkit.search();
-      });
+      this.createCore(this.searchkit, items);
+      this.setState({ items, entities });
     }
   }
+
+  createCore = (searchkit, items) => {
+    if (!this.core) {
+      this.core = EntitiesCore.create(searchkit);
+      items.map(key => {
+        this.core.addAccessor(key);
+      });
+    }
+  };
 
   toggleCollapse = key => collapsed => {
     this.setState(R.assocPath(["entities", key], collapsed));

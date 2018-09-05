@@ -30,14 +30,14 @@ export class EntityFilter extends PureComponent {
             queryBuilder={EntityQuery(entity)}
           />
         </Row>
-        <Row>
-          <EntityRefinementListFilter
-            id={`${entity}_checked`}
-            entity={entity}
-            title={title}
-          />
-        </Row>
       </CollapsiblePanel>
     );
+    // <Row>
+    //   <EntityRefinementListFilter
+    //     id={`${entity}_checked`}
+    //     entity={entity}
+    //     title={title}
+    //   />
+    // </Row>
   }
 }
