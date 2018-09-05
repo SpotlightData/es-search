@@ -32,8 +32,11 @@ export default class DateFilter extends PureComponent {
     return (
       <React.Fragment>
         <Row>
+          <h3>Date created</h3>
+        </Row>
+        <Row>
           <RangeFilter
-            title="Date Created"
+            title=""
             field={field}
             id={ids[0]}
             min={rangeStart}
