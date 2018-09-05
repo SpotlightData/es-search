@@ -7,19 +7,30 @@ import { EntityFilter } from "../EntityFilter";
 import { equals } from "ramda";
 import sid from "shortid";
 
+const entityCount = obj => obj.entities.length;
+const same = (fn, v1, v2) => fn(v1) === fn(v2);
 // We have to hide and open components first or else they won't register in searchkit filters
 export class MentionsRender extends SearchkitComponent {
-  state = { hidden: true, entities: {} };
+  state = { entities: {}, items: [] };
 
-  componentDidMount() {
-    this.searchkit.search();
-    setTimeout(() => {
-      const entities = this.props.entities.reduce(
-        (dict, entry) => ({ ...dict, [entry.key]: true }),
-        {}
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      !same(entityCount, this.props, prevProps) &&
+      entityCount(this.props) !== 0
+    ) {
+      const { items, entities } = this.props.entities.reduce(
+        ({ items, entities }, { key }) => {
+          return {
+            entities: R.assoc(key, false, entities),
+            items: [key, ...items]
+          };
+        },
+        { items: [], entities: {} }
       );
-      this.setState({ hidden: false, entities });
-    }, 200);
+      this.setState({ items, entities }, () => {
+        this.searchkit.search();
+      });
+    }
   }
 
   toggleCollapse = key => collapsed => {
@@ -27,28 +38,24 @@ export class MentionsRender extends SearchkitComponent {
   };
 
   isCollapsed(key) {
-    const { hidden, entities } = this.state;
-    return hidden === true ? false : entities[key];
+    const { entities } = this.state;
+    return entities[key];
   }
 
   render() {
     // Map key to - entity, title
-    const { hidden } = this.state;
-    const { entities } = this.props;
-    const style = hidden ? { visibility: "hidden" } : {};
+    const { items } = this.state;
     return (
       <React.Fragment>
-        <div style={style}>
-          {entities.map(({ key }) => (
-            <EntityFilter
-              key={key}
-              title={key}
-              entity={key}
-              onClick={this.toggleCollapse(key)}
-              collapsed={this.isCollapsed(key)}
-            />
-          ))}
-        </div>
+        {items.map(key => (
+          <EntityFilter
+            key={key}
+            title={key}
+            entity={key}
+            onClick={this.toggleCollapse(key)}
+            collapsed={this.isCollapsed(key)}
+          />
+        ))}
       </React.Fragment>
     );
   }
