@@ -48,7 +48,7 @@ export const App = () => {
               <DateFilter />
             </Row>
             <Row type="flex" justify="center">
-              <Mentions.Loader render={Mentions.Render} />
+              <Mentions />
             </Row>
           </div>
         </Col>

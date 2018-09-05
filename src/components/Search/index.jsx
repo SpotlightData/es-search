@@ -1,37 +1,55 @@
 import React from "react";
 import { string, bool, number, func } from "prop-types";
 import { Input } from "antd";
-import { SearchBox as SKSearchBox } from "searchkit";
+import {
+  SearchBox as SKSearchBox,
+  InputFilter as SKInputFilter
+} from "searchkit";
 
 import { RelaxedSearch } from "./RelaxedSearch";
 
-export default class Search extends SKSearchBox {
-  static propTypes = {
-    placeholder: string,
-    autofocus: bool,
-    searchOnChange: bool,
-    searchThrottleTime: number,
-    queryBuilder: func,
-    id: string
-  };
+const propTypes = {
+  placeholder: string,
+  autofocus: bool,
+  searchOnChange: bool,
+  searchThrottleTime: number,
+  queryBuilder: func,
+  id: string
+};
 
-  static defaultProps = {
-    searchOnChange: true,
-    searchThrottleTime: 500,
-    queryBuilder: RelaxedSearch,
-    id: "search"
-  };
+const defaultProps = {
+  searchOnChange: true,
+  searchThrottleTime: 500,
+  queryBuilder: RelaxedSearch,
+  id: "search"
+};
+
+const render = self => {
+  return (
+    <Input.Search
+      placeholder={self.props.placeholder}
+      onChange={e => self.onChange(e)}
+      onFocus={() => self.setFocusState(true)}
+      onBlur={() => self.setFocusState(false)}
+      value={self.getValue()}
+    />
+  );
+};
+
+export class Search extends SKSearchBox {
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
 
   render() {
-    const value = this.getValue();
-    return (
-      <Input.Search
-        placeholder={this.props.placeholder}
-        onChange={e => this.onChange(e)}
-        onFocus={() => this.setFocusState(true)}
-        onBlur={() => this.setFocusState(false)}
-        value={value}
-      />
-    );
+    return render(this);
+  }
+}
+
+export class SearchFilter extends SKInputFilter {
+  static propTypes = propTypes;
+  static defaultProps = defaultProps;
+
+  render() {
+    return render(this);
   }
 }
