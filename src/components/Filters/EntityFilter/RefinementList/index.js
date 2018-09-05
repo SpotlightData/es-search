@@ -5,8 +5,10 @@ import { Badge } from "@spotlightdata/nanowire-extensions/lib/components/antd/Ba
 import { RefinementListFilter, FastClick } from "searchkit";
 import { RefinementAccessor } from "./Accessor";
 
-const style = { color: "#108ee9", cursor: "pointer" };
+import sid from "shortid";
 
+const style = { color: "#108ee9", cursor: "pointer" };
+const badgeStyle = { backgroundColor: "#1890ff" };
 /*
   Required props
   entity = the @type of the entity we want to filter by
@@ -27,16 +29,17 @@ export class EntityRefinementListFilter extends RefinementListFilter {
     showMore: true
   };
 
-  toggleFilter(key) {
+  toggleFilter = key => _changed => {
     this.accessor.state = this.accessor.state.cycle(key);
     this.searchkit.performSearch();
-  }
+  };
 
   defineAccessor() {
-    const accessorOptions = this.getAccessorOptions();
-    accessorOptions.entity = this.props.entity;
-    accessorOptions.filterName = `${this.props.entity}Filter`;
-    accessorOptions.actualField = this.props.field;
+    const accessorOptions = Object.assign(this.getAccessorOptions(), {
+      entity: this.props.entity,
+      filterName: `${this.props.entity}Filter`,
+      actualField: this.props.field
+    });
     return new RefinementAccessor(
       this.props.field + this.props.entity,
       accessorOptions
@@ -73,38 +76,26 @@ export class EntityRefinementListFilter extends RefinementListFilter {
     );
   }
 
+  isSelected(key) {
+    return this.getSelectedItems()[key] === "1";
+  }
+
   render() {
-    const { showCount, countFormatter } = this.props;
     const showMore = this.renderShowMore();
     const rows = this.getItems();
-    console.log(rows);
-    return null;
     return (
       <React.Fragment>
-        {rows.map(entity => (
+        {rows.map(({ key, doc_count }) => (
           <Row key={sid.generate()} type="flex" justify="space-between">
             <Checkbox
-              onChange={this.toggleActive(entity.value, entity)}
-              checked={entity.value in show.active}
+              onChange={this.toggleFilter(key)}
+              checked={this.isSelected(key)}
             >
-              {entity.value}
+              {key}
             </Checkbox>
-            <Badge count={entity.position.length} style={badgeStyle} />
+            <Badge count={doc_count} style={badgeStyle} />
           </Row>
         ))}
-        {/* <CheckboxList
-
-            key="listComponent"
-            items={this.getItems()}
-            itemComponent={this.props.itemComponent}
-            selectedItems={this.getSelectedItems()}
-            toggleItem={e => this.toggleFilter(e)}
-            setItems={e => this.setFilters(e)}
-            docCount={this.accessor.getDocCount()}
-            showCount={showCount}
-            translate={this.translate}
-            countFormatter={countFormatter}
-          /> */}
         <Row>{showMore}</Row>
       </React.Fragment>
     );
