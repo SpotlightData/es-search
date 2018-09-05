@@ -17,7 +17,7 @@ export class EntityFilter extends Component {
     const { title, entity } = this.props;
     return (
       <CollapsiblePanel
-        title={title}
+        header={title}
         collapsed={collapsed}
         onClick={this.handleCollapse}
       >

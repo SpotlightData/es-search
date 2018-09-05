@@ -43,12 +43,14 @@ export const App = () => {
           </div>
         </Col>
         <Col span={12}>
-          <Row style={{ width: 374 }}>
-            <DateFilter />
-          </Row>
-          <Row>
-            <Mentions.Loader render={Mentions.Render} />
-          </Row>
+          <div style={{ width: 374 }}>
+            <Row>
+              <DateFilter />
+            </Row>
+            <Row type="flex" justify="center">
+              <Mentions.Loader render={Mentions.Render} />
+            </Row>
+          </div>
         </Col>
       </Row>
     </div>
