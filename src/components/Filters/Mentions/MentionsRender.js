@@ -29,7 +29,7 @@ export class MentionsRender extends SearchkitComponent {
         { items: [], entities: {} }
       );
       this.createCore(this.searchkit, items);
-      this.setState({ items, entities });
+      this.setState({ items, entities }, () => this.searchkit.search());
     }
   }
 
