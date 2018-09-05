@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { string } from "prop-types";
+import { string, number, arrayOf } from "prop-types";
 
 import { Row } from "antd";
 
@@ -16,34 +16,38 @@ const dateRender = ({ minValue, maxValue, onFinished }) => (
 
 export default class DateFilter extends PureComponent {
   static propTypes = {
-    field: string
+    field: string,
+    rangeStart: number,
+    ids: arrayOf(string)
   };
 
   static defaultProps = {
-    field: "jsonLD.dateCreated"
+    field: "jsonLD.dateCreated",
+    rangeStart: Date.parse("2010-01-01"),
+    ids: ["date1", "date2"]
   };
 
   render() {
-    const { field } = this.props;
+    const { field, ids, rangeStart } = this.props;
     return (
       <React.Fragment>
         <Row>
           <RangeFilter
+            title="Date Created"
             field={field}
-            id="date1"
-            min={Date.parse("2010-01-01")}
+            id={ids[0]}
+            min={rangeStart}
             max={Date.now()}
             showHistogram
-            title="Date Created"
             rangeFormatter={defaultTimeFormat}
             rangeComponent={RangeSliderHistogram}
           />
         </Row>
         <Row>
           <RangeFilter
-            field={field}
-            id="date2"
             title=""
+            field={field}
+            id={ids[0]}
             min={Date.now() - 1}
             max={Date.now()}
             rangeComponent={dateRender}
