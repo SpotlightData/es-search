@@ -3,7 +3,7 @@ export function RelaxedSearch(query, options) {
     return;
   }
   return {
-    simple_query_string: Object.assign({ query: `.*${query}.*` }, options)
+    simple_query_string: Object.assign({ query }, options)
   };
   // return {
   //   multi_match: Object.assign({ query: `.*${query}.*` }, options)

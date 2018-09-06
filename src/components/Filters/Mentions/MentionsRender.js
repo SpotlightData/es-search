@@ -1,25 +1,33 @@
 import React, { Component } from "react";
 import * as R from "ramda";
 
-import { SearchkitComponent } from "searchkit";
+// import { SearchkitComponent } from "searchkit";
 import { EntityFilter } from "../EntityFilter";
 import { EntitiesCore } from "../EntityFilter/Core";
 
 import { equals } from "ramda";
 import sid from "shortid";
 
-const entityCount = obj => obj.entities.length;
-const same = (fn, v1, v2) => fn(v1) === fn(v2);
+export class MentionsRender extends Component {
+  state = { entities: {}, items: [], entityList: [] };
 
-export class MentionsRender extends SearchkitComponent {
-  state = { entities: {}, items: [] };
+  // To prevent dropdown from getting closed, as we get passed different entity props over time
+  static getDerivedStateFromProps(props, state) {
+    const { entityList } = state;
+    return {
+      entityList: entityList.length === 0 ? props.entities : entityList
+    };
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const sameState = equals(this.state, nextState);
+    return !sameState;
+  }
 
   componentDidUpdate(prevProps) {
-    if (
-      !same(entityCount, this.props, prevProps) &&
-      entityCount(this.props) !== 0
-    ) {
-      const { items, entities } = this.props.entities.reduce(
+    const { items, entityList } = this.state;
+    if (items.length !== entityList.length) {
+      const { items, entities } = entityList.reduce(
         ({ items, entities }, { key }) => {
           return {
             entities: R.assoc(key, true, entities),
@@ -28,9 +36,9 @@ export class MentionsRender extends SearchkitComponent {
         },
         { items: [], entities: {} }
       );
-      this.createCore(this.searchkit, items);
+      this.createCore(this.getSearchkit(), items);
       this.setState({ items, entities }, () => {
-        this.searchkit.performSearch();
+        this.getSearchkit().performSearch();
       });
     }
   }
@@ -39,6 +47,10 @@ export class MentionsRender extends SearchkitComponent {
     if (this.core) {
       this.core.removeAccessors();
     }
+  }
+
+  getSearchkit() {
+    return this.props.searchkit;
   }
 
   createCore = (searchkit, items) => {

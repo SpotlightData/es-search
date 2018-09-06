@@ -32,7 +32,7 @@ export const App = () => {
         <Col span={12}>
           <div style={{ width: 600 }}>
             <Row style={{ marginBottom: "1em" }}>
-              <Search queryFields={["jsonLD.name"]} />
+              <Search queryFields={["jsonLD.text"]} />
             </Row>
             <Row>
               <HitsTable

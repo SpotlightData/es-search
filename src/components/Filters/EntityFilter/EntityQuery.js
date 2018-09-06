@@ -15,10 +15,27 @@ export function EntityQuery(entity) {
       nested: {
         path: "jsonLD.mentions",
         query: {
+          // filtered: {
+          //   query: {
+          //     bool: {
+          //       must: [
+          //         { match: { "jsonLD.mentions.@type.keyword": entity } },
+          //         {
+          //           simple_query_string: Object.assign({ query: segment }, options)
+          //         }
+          //       ]
+          //     }
+          //   }
+          // },
+          // filter: {
+
+          // }
           bool: {
             must: [
               { match: { "jsonLD.mentions.@type.keyword": entity } },
-              { query_string: Object.assign({ query: segment }, options) }
+              {
+                simple_query_string: Object.assign({ query: segment }, options)
+              }
             ]
           }
         }

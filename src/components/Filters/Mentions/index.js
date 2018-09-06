@@ -13,6 +13,11 @@ export class Mentions extends SearchkitComponent {
   }
 
   render() {
-    return <MentionsRender entities={this.accessor.getEntities()} />;
+    return (
+      <MentionsRender
+        entities={this.accessor.getEntities()}
+        searchkit={this.searchkit}
+      />
+    );
   }
 }
