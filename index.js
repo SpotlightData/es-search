@@ -17,5 +17,4 @@ const modules = {
   Search,
   SearchkitProvider
 };
-console.log(modules);
 module.exports = modules;
