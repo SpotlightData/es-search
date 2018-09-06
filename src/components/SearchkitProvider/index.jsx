@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { node, string, shape, func } from "prop-types";
+import { node, string, number, shape, func } from "prop-types";
 
 import { SearchkitProvider as SKProvider } from "searchkit";
 import { Loading } from "@spotlightdata/nanowire-extensions/lib/components/ui/Loading";
@@ -16,7 +16,8 @@ export default class SearchkitProvider extends Component {
     queryKey: string,
     myTab: string,
     url: string,
-    customise: func
+    customise: func,
+    loadWait: number
   };
 
   static defaultProps = {
@@ -24,11 +25,22 @@ export default class SearchkitProvider extends Component {
     customise: identity,
     queryKey: "sk",
     url: "/api/searches/searchkit",
-    myTab: "2"
+    myTab: "2",
+    loadWait: 2000
   };
 
   state = {
     searchkit: undefined
+  };
+
+  resetTimeout = () => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(
+      this.state.searchkit.stopLoad,
+      this.props.loadWait
+    );
   };
 
   componentDidMount() {
@@ -50,10 +62,17 @@ export default class SearchkitProvider extends Component {
         queryKey,
         myTab
       };
-      this.setState({
-        searchkit: SearchkitManager.create(config, customise)
-      });
+      this.setState(
+        {
+          searchkit: SearchkitManager.create(config, customise)
+        },
+        this.resetTimeout
+      );
     }
+  }
+
+  componentDidUpdate() {
+    this.resetTimeout();
   }
 
   render() {

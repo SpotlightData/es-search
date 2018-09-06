@@ -21,7 +21,7 @@ export class SearchkitManager extends SkManager {
           "X-Resource-Id": projectId,
           Authorization: `JWT ${token}`
         },
-        timeout: 10000,
+        timeout: 20000,
         searchOnLoad: true,
         useHistory: true,
         createHistory: () => history,
@@ -78,4 +78,9 @@ export class SearchkitManager extends SkManager {
       prevTab = tab;
     });
   }
+
+  stopLoad = () => {
+    this.accessors.initialised = true;
+    // console.log("Stopping");
+  };
 }
