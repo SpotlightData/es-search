@@ -15,10 +15,26 @@ const decodeObjString = str => {
   return qs.parse(clean);
 };
 
+function cleanDates(state) {
+  if (typeof state !== "object") {
+    return state;
+  }
+  return Object.entries(state).reduce((newState, [key, value]) => {
+    const newValue = !key.includes("date")
+      ? value
+      : {
+          min: parseInt(value.min, 10),
+          max: parseInt(value.max, 10)
+        };
+    return { ...newState, [key]: newValue };
+  }, {});
+}
+
 export const stateFromQuery = key =>
   R.pipe(
     url => queryUrlToObject(url)[key] || "",
-    decodeObjString
+    decodeObjString,
+    cleanDates
   );
 
 export function updateSKHistory(history, queryKey, state) {
