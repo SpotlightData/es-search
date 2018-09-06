@@ -27,7 +27,7 @@ function cleanDates(state) {
           max: parseInt(value.max, 10)
         };
     return { ...newState, [key]: newValue };
-  });
+  }, {});
 }
 
 export const stateFromQuery = key =>
