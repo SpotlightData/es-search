@@ -75,14 +75,20 @@ export class EntityRefinementListFilter extends Component {
     return (
       <React.Fragment>
         {rows.map(({ key, doc_count }) => (
-          <Row key={sid.generate()} type="flex" justify="space-between">
-            <Checkbox
-              onChange={this.toggleFilter(key)}
-              checked={this.isSelected(key)}
-            >
-              {key}
-            </Checkbox>
-            <Badge count={doc_count} style={badgeStyle} />
+          <Row key={sid.generate()}>
+            <Col span={16}>
+              <Checkbox
+                onChange={this.toggleFilter(key)}
+                checked={this.isSelected(key)}
+              >
+                {key}
+              </Checkbox>
+            </Col>
+            <Col span={8}>
+              <div style={{ float: "right" }}>
+                <Badge count={doc_count} style={badgeStyle} />
+              </div>
+            </Col>
           </Row>
         ))}
         <Row>{showMore}</Row>
