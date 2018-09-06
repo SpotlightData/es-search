@@ -8,6 +8,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "build",
+    "lib"
+  ],
   "scripts": {
     "start": "neutrino start",
     "build": "neutrino build",
@@ -24,10 +28,10 @@
     "webpack-dev-server": "^3.1.7"
   },
   "dependencies": {
-    "qs": "^6.5.2",
-    "source-map-support": "^0.5.9"
+    "qs": "^6.5.2"
   },
   "peerDependencies": {
+    "source-map-support": "^0.5.9",
     "@spotlightdata/nanowire-extensions": "1.2.0",
     "antd": "^3.9.1",
     "prop-types": "^15.6.2",
