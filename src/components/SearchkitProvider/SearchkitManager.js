@@ -44,7 +44,6 @@ export class SearchkitManager extends SkManager {
     const searchPromise = this._search();
     if (this.options.useHistory) {
       const historyMethod = replaceState ? history.replace : history.push;
-      // console.log(this.state);
       const newHistoryState = updateSKHistory(
         history,
         this.queryKey,
@@ -79,4 +78,9 @@ export class SearchkitManager extends SkManager {
       prevTab = tab;
     });
   }
+
+  stopLoad = () => {
+    this.accessors.initialised = true;
+    // console.log("Stopping");
+  };
 }

@@ -7,6 +7,7 @@ export class AccessorManager extends SKAccessorManager {
     this.stateValue = {};
     // Use this so initial query parameters don't get cleared away
     this.initialised = false;
+    this.count = 0;
   }
 
   static from(initial) {
@@ -26,14 +27,9 @@ export class AccessorManager extends SKAccessorManager {
   }
 
   getState() {
-    // console.log(this.stateValue);
-    // let initialised = this.initialised;
-    // if (this.initialised === false) {
-    //   this.initialised = true;
-    // }
     return reduce(
       (state, accessor) => mergeDeepRight(state, accessor.getQueryObject()),
-      this.stateValue,
+      this.initialised ? {} : this.stateValue,
       this.getStatefulAccessors()
     );
   }
