@@ -100,21 +100,38 @@ export class RefinementAccessor extends FacetAccessor {
     }
   }
 
+  //     getMoreSizeOption():ISizeOption {
+  //   var option = {size:0, label:""}
+  //   var total = this.getCount()
+  //   var facetsPerPage = this.options.facetsPerPage
+  //   if (total <= this.defaultSize) return null;
+
+  //   if (total <= this.size) {
+  //     option = {size:this.defaultSize, label:this.translate("facets.view_less")}
+  //   } else if ((this.size + facetsPerPage) >= total) {
+  //     option = {size:total, label:this.translate("facets.view_all")}
+  //   } else if ((this.size + facetsPerPage) < total) {
+  //     option = {size:this.size + facetsPerPage, label:this.translate("facets.view_more")}
+  //   } else if (total ){
+  //     option = null
+  //   }
+
+  //   return option;
+  // }
+
   getLessSizeOption() {
     let option = { size: 0, label: "" };
     const total = this.getCount();
     const { facetsPerPage } = this.options;
-    if (total <= this.defaultSize) return null;
 
-    if (this.size + facetsPerPage < total && this.size !== this.defaultSize) {
-      option = {
-        size: this.defaultSize,
+    if (this.size - facetsPerPage >= this.defaultSize) {
+      return {
+        size: this.size - facetsPerPage,
         label: this.translate("facets.view_less")
       };
     } else if (total) {
-      option = null;
+      return null;
     }
-
     return option;
   }
 

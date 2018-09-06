@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { shape, string } from "prop-types";
 
 import { Checkbox, Row, Col } from "antd";
@@ -14,101 +14,79 @@ const badgeStyle = { backgroundColor: "#1890ff" };
   Required props
   entity = the @type of the entity we want to filter by
 */
-export class EntityRefinementListFilter extends PureComponent {
+export class EntityRefinementListFilter extends Component {
   static propTypes = {
-    accessor: shape({}).isRequired,
-    title: string.isRequired
+    core: shape({}).isRequired,
+    title: string.isRequired,
+    entity: string.isRequired
   };
 
+  toggleFilter = key => _changed => {
+    this.props.core.cycle(this.props.entity, key);
+  };
+
+  getAccessor() {
+    return this.props.core.get(this.props.entity);
+  }
+
+  getSelectedItems() {
+    return this.getAccessor().state.getValue();
+  }
+
+  getItems() {
+    return this.getAccessor().getBuckets();
+  }
+
+  toggleViewMoreOption(option) {
+    this.props.core.setViewMoreOption(this.props.entity, option);
+  }
+
+  isSelected(key) {
+    return this.getSelectedItems()[key] === "1";
+  }
+
+  renderShowMore() {
+    const accessor = this.getAccessor();
+    const optionMore = accessor.getMoreSizeOption();
+    const optionLess = accessor.getLessSizeOption();
+    if (!optionMore && !optionLess) {
+      return null;
+    }
+
+    return (
+      <div key="showMoreLess">
+        {optionMore && (
+          <FastClick handler={() => this.toggleViewMoreOption(optionMore)}>
+            <div style={style}>More</div>
+          </FastClick>
+        )}
+        {optionLess && (
+          <FastClick handler={() => this.toggleViewMoreOption(optionLess)}>
+            <div style={style}>Less</div>
+          </FastClick>
+        )}
+      </div>
+    );
+  }
+
   render() {
-    return null;
+    const showMore = this.renderShowMore();
+    const rows = this.getItems();
+    return (
+      <React.Fragment>
+        {rows.map(({ key, doc_count }) => (
+          <Row key={sid.generate()} type="flex" justify="space-between">
+            <Checkbox
+              onChange={this.toggleFilter(key)}
+              checked={this.isSelected(key)}
+            >
+              {key}
+            </Checkbox>
+            <Badge count={doc_count} style={badgeStyle} />
+          </Row>
+        ))}
+        <Row>{showMore}</Row>
+      </React.Fragment>
+    );
   }
 }
-// export class EntityRefinementListFilter extends RefinementListFilter {
-//   static defaultProps = {
-//     size: 5,
-//     field: "jsonLD.mentions.name.keyword",
-//     operator: "AND",
-//     fieldOptions: {
-//       type: "nested",
-//       options: {
-//         path: "jsonLD.mentions"
-//       }
-//     },
-//     collapsable: true,
-//     bucketsTransform: a => a,
-//     showMore: true
-//   };
-
-//   toggleFilter = key => _changed => {
-//     this.accessor.state = this.accessor.state.cycle(key);
-//     this.searchkit.performSearch();
-//   };
-
-//   defineAccessor() {
-//     const accessorOptions = Object.assign(this.getAccessorOptions(), {
-//       entity: this.props.entity,
-//       filterName: `${this.props.entity}Filter`,
-//       actualField: this.props.field
-//     });
-//     return new RefinementAccessor(
-//       this.props.field + this.props.entity,
-//       accessorOptions
-//     );
-//   }
-
-//   renderShowMore() {
-//     const optionMore = this.accessor.getMoreSizeOption();
-//     const optionLess = this.accessor.getLessSizeOption();
-
-//     if (!optionMore && !optionLess) {
-//       return null;
-//     }
-
-//     return (
-//       <div key="showMoreLess">
-//         {optionMore && (
-//           <FastClick
-//             handler={() => this.toggleViewMoreOption(optionMore)}
-//             key="showMore"
-//           >
-//             <div style={style}>{this.translate(optionMore.label)}</div>
-//           </FastClick>
-//         )}
-//         {optionLess && (
-//           <FastClick
-//             handler={() => this.toggleViewMoreOption(optionLess)}
-//             key="showLess"
-//           >
-//             <div style={style}>{this.translate(optionLess.label)}</div>
-//           </FastClick>
-//         )}
-//       </div>
-//     );
-//   }
-
-//   isSelected(key) {
-//     return this.getSelectedItems()[key] === "1";
-//   }
-
-//   render() {
-//     const showMore = this.renderShowMore();
-//     const rows = this.getItems();
-//     return (
-//       <React.Fragment>
-//         {rows.map(({ key, doc_count }) => (
-//           <Row key={sid.generate()} type="flex" justify="space-between">
-//             <Checkbox
-//               onChange={this.toggleFilter(key)}
-//               checked={this.isSelected(key)}
-//             >
-//               {key}
-//             </Checkbox>
-//             <Badge count={doc_count} style={badgeStyle} />
-//           </Row>
-//         ))}
-//         <Row>{showMore}</Row>
-//       </React.Fragment>
-//     );
-//   }
-// }

@@ -1,5 +1,5 @@
-import React, { PureComponent } from "react";
-import { bool, string, func } from "prop-types";
+import React, { Component } from "react";
+import { bool, string, func, shape } from "prop-types";
 
 import { Row } from "antd";
 
@@ -8,16 +8,17 @@ import { EntityQuery } from "./EntityQuery";
 import { EntityRefinementListFilter } from "./RefinementList";
 import { SearchFilter } from "../../Search";
 
-export class EntityFilter extends PureComponent {
+export class EntityFilter extends Component {
   static propTypes = {
     title: string.isRequired,
     entity: string.isRequired,
     onClick: func.isRequired,
-    collapsed: bool.isRequired
+    collapsed: bool.isRequired,
+    core: shape({}).isRequired
   };
 
   render() {
-    const { title, entity, collapsed, onClick, accessor } = this.props;
+    const { title, entity, collapsed, onClick, core } = this.props;
     return (
       <CollapsiblePanel header={title} collapsed={collapsed} onClick={onClick}>
         <Row style={{ marginBottom: "1em" }}>
@@ -34,7 +35,7 @@ export class EntityFilter extends PureComponent {
           <EntityRefinementListFilter
             entity={entity}
             title={title}
-            accessor={accessor}
+            core={core}
           />
         </Row>
       </CollapsiblePanel>

@@ -10,7 +10,7 @@ import sid from "shortid";
 
 const entityCount = obj => obj.entities.length;
 const same = (fn, v1, v2) => fn(v1) === fn(v2);
-// We have to hide and open components first or else they won't register in searchkit filters
+
 export class MentionsRender extends SearchkitComponent {
   state = { entities: {}, items: [] };
 
@@ -29,7 +29,9 @@ export class MentionsRender extends SearchkitComponent {
         { items: [], entities: {} }
       );
       this.createCore(this.searchkit, items);
-      this.setState({ items, entities }, () => this.searchkit.search());
+      this.setState({ items, entities }, () => {
+        this.searchkit.performSearch();
+      });
     }
   }
 
@@ -69,7 +71,7 @@ export class MentionsRender extends SearchkitComponent {
             entity={key}
             onClick={this.toggleCollapse(key)}
             collapsed={this.isCollapsed(key)}
-            accessor={this.core.get(key)}
+            core={this.core}
           />
         ))}
       </React.Fragment>

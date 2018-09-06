@@ -11,7 +11,8 @@ const defaults = {
     }
   },
   collapsable: true,
-  showMore: true
+  showMore: true,
+  facetsPerPage: 5
 };
 
 export class EntitiesCore {
@@ -22,6 +23,7 @@ export class EntitiesCore {
   constructor(searchkit) {
     this.searchkit = searchkit;
     this.accessors = {};
+    this.registered = 0;
   }
 
   getAccessorOptions(config) {
@@ -35,7 +37,8 @@ export class EntitiesCore {
       translations,
       orderKey,
       orderDirection,
-      fieldOptions
+      fieldOptions,
+      facetsPerPage
     } = Object.assign({}, defaults, config);
     return {
       operator,
@@ -47,12 +50,14 @@ export class EntitiesCore {
       translations,
       orderKey,
       orderDirection,
-      fieldOptions
+      fieldOptions,
+      facetsPerPage
     };
   }
 
   addAccessor(entity, config = {}) {
     this.accessors[entity] = this.defineAccessor(entity, config);
+    this.searchkit.addAccessor(this.accessors[entity]);
   }
 
   defineAccessor(entity, config) {
@@ -75,5 +80,15 @@ export class EntitiesCore {
 
   get(key) {
     return this.accessors[key];
+  }
+
+  cycle(entity, key) {
+    this.accessors[entity].state = this.accessors[entity].state.cycle(key);
+    this.searchkit.performSearch();
+  }
+
+  setViewMoreOption(entity, option) {
+    this.accessors[entity].setViewMoreOption(option);
+    this.searchkit.performSearch();
   }
 }
