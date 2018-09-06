@@ -26,7 +26,7 @@ export default class SearchkitProvider extends Component {
     queryKey: "sk",
     url: "/api/searches/searchkit",
     myTab: "2",
-    loadWait: 2000
+    loadWait: 1000
   };
 
   state = {

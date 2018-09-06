@@ -3,5 +3,6 @@ export { default as HitsTable } from "./HitsTable";
 export { default as Pagination } from "./Pagination";
 export { default as DateFilter } from "./DateFilter";
 export { default as ActiveFiltersDisplay } from "./ActiveFiltersDisplay";
+export { default as ClearFiltersDisplay } from "./ClearFiltersDisplay";
 export * from "./Filters";
 export * from "./Search";

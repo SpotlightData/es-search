@@ -11,7 +11,8 @@ import {
   Search,
   DateFilter,
   Mentions,
-  ActiveFiltersDisplay
+  ActiveFiltersDisplay,
+  ClearFiltersDisplay
 } from "../../components";
 import { defaultTimeFomat } from "@spotlightdata/nanowire-extensions/lib/helpers/table";
 
@@ -35,7 +36,12 @@ export const App = () => {
   return (
     <div style={{ padding: "2em", width: "100%", height: "100%" }}>
       <Row>
-        <ActiveFiltersDisplay />
+        <Col span={6}>
+          <ActiveFiltersDisplay />
+        </Col>
+        <Col span={6}>
+          <ClearFiltersDisplay />
+        </Col>
       </Row>
       <Row>
         <Col span={12}>

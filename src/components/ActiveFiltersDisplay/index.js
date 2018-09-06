@@ -13,7 +13,7 @@ class FilterGroupItem extends SkFilterGroupItem {
   render() {
     const { label } = this.props;
     return (
-      <Tag closable onClose={this.removeFilter}>
+      <Tag closable onClose={this.removeFilter} color="#108ee9">
         {label}
       </Tag>
     );
