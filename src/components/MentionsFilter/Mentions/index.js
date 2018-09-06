@@ -5,7 +5,7 @@ import { SearchkitComponent } from "searchkit";
 import { EntityAccessor } from "./EntityAccessor";
 import { MentionsRender } from "./MentionsRender";
 
-export class Mentions extends SearchkitComponent {
+export class MentionsFilter extends SearchkitComponent {
   defineAccessor = EntityAccessor.create;
 
   componentDidMount() {

@@ -10,7 +10,8 @@
   },
   "files": [
     "build",
-    "lib"
+    "lib",
+    "index.js"
   ],
   "scripts": {
     "start": "neutrino start",
@@ -31,7 +32,6 @@
     "qs": "^6.5.2"
   },
   "peerDependencies": {
-    "source-map-support": "^0.5.9",
     "@spotlightdata/nanowire-extensions": "1.2.0",
     "antd": "^3.9.1",
     "prop-types": "^15.6.2",
@@ -39,6 +39,7 @@
     "react": "^16.4.2",
     "react-jss": "^8.6.1",
     "searchkit": "^2.3.1-alpha.3",
-    "shortid": "^2.2.13"
+    "shortid": "^2.2.13",
+    "source-map-support": "^0.5.9"
   }
 }
