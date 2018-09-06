@@ -10,7 +10,7 @@ import {
   HitsTable,
   Search,
   DateFilter,
-  Mentions,
+  MentionsFilter,
   ActiveFiltersDisplay,
   ClearFiltersDisplay
 } from "../../components";
@@ -63,7 +63,7 @@ export const App = () => {
               <DateFilter />
             </Row>
             <Row type="flex" justify="center">
-              <Mentions />
+              <MentionsFilter />
             </Row>
           </div>
         </Col>
