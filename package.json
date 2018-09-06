@@ -8,6 +8,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "build",
+    "lib",
+    "index.js"
+  ],
   "scripts": {
     "start": "neutrino start",
     "build": "neutrino build",
@@ -20,7 +25,6 @@
     "react-dom": "^16.4.2",
     "react-hot-loader": "^4.3.5",
     "react-router-dom": "^4.3.1",
-    "source-map-support": "^0.5.9",
     "webpack": "3.12",
     "webpack-dev-server": "^3.1.7"
   },
@@ -35,6 +39,7 @@
     "react": "^16.4.2",
     "react-jss": "^8.6.1",
     "searchkit": "^2.3.1-alpha.3",
-    "shortid": "^2.2.13"
+    "shortid": "^2.2.13",
+    "source-map-support": "^0.5.9"
   }
 }
