@@ -1,11 +1,13 @@
-const ActiveFiltersDisplay = require("./build/ActiveFiltersDisplay");
-const ClearFiltersDisplay = require("./build/ClearFiltersDisplay");
-const DateFilter = require("./build/DateFilter");
-const MentionsFilter = require("./build/MentionsFilter");
-const Pagination = require("./build/Pagination");
+const ActiveFiltersDisplay = require("./build/ActiveFiltersDisplay").default;
+const ClearFiltersDisplay = require("./build/ClearFiltersDisplay").default;
+const DateFilter = require("./build/DateFilter").default;
+const MentionsFilter = require("./build/MentionsFilter").default;
+const Pagination = require("./build/Pagination").default;
+const ExposeQuery = require("./build/ExposeQuery").default;
+const Sorter = require("./build/Sorter").default;
 
 const { SearchFilter, Search } = require("./build/Search");
-const SearchkitProvider = require("./build/SearchkitProvider");
+const SearchkitProvider = require("./build/SearchkitProvider").default;
 
 const modules = {
   ActiveFiltersDisplay,
@@ -15,6 +17,9 @@ const modules = {
   Pagination,
   SearchFilter,
   Search,
-  SearchkitProvider
+  SearchkitProvider,
+  ExposeQuery,
+  Sorter
 };
+
 module.exports = modules;
