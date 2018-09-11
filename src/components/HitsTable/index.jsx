@@ -65,8 +65,9 @@ export default class HitsTable extends SearchkitComponent {
   render() {
     const { hitsPerPage, columns, format, filter } = this.props;
     const formatter = format || this.format;
+    console.log(this.getHits());
     let results = this.getHits().reduce(
-      (list, item) => [formatter(item), ...list],
+      (list, item) => list.concat([formatter(item)]),
       []
     );
     if (filter) {

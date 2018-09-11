@@ -5,4 +5,6 @@ export { default as DateFilter } from "./DateFilter";
 export { default as ActiveFiltersDisplay } from "./ActiveFiltersDisplay";
 export { default as ClearFiltersDisplay } from "./ClearFiltersDisplay";
 export { default as MentionsFilter } from "./MentionsFilter";
+export { default as Sorter } from "./Sorter";
+export { default as ExposeQuery } from "./ExposeQuery";
 export * from "./Search";
