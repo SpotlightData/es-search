@@ -5,6 +5,7 @@ const MentionsFilter = require("./build/MentionsFilter").default;
 const Pagination = require("./build/Pagination").default;
 const ExposeQuery = require("./build/ExposeQuery").default;
 const Sorter = require("./build/Sorter").default;
+const HitsTable = require("./build/HitsTable").default;
 
 const { SearchFilter, Search } = require("./build/Search");
 const SearchkitProvider = require("./build/SearchkitProvider").default;
@@ -19,7 +20,8 @@ const modules = {
   Search,
   SearchkitProvider,
   ExposeQuery,
-  Sorter
+  Sorter,
+  HitsTable
 };
 
 module.exports = modules;
