@@ -14,11 +14,12 @@
     "index.js"
   ],
   "scripts": {
-    "start": "neutrino start",
-    "build": "neutrino build",
+    "start": "node builder.js start",
+    "build": "node builder.js build",
     "packages": "yarn install && bash peer.sh"
   },
   "devDependencies": {
+    "@atecake/builder": "0.0.1",
     "@neutrinojs/env": "^8.3.0",
     "@neutrinojs/react-components": "^8.3.0",
     "neutrino": "^8.3.0",

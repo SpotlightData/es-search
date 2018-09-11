@@ -14,7 +14,7 @@ import {
   ActiveFiltersDisplay,
   ClearFiltersDisplay,
   Sorter
-} from "../../components";
+} from '../../../src/components';
 import { defaultTimeFomat } from "@spotlightdata/nanowire-extensions/lib/helpers/table";
 
 const columns = [

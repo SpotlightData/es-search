@@ -1,9 +1,9 @@
 import React from "react";
 import { render } from "react-dom";
 import { AppContainer } from "react-hot-loader";
-import { SearchkitProvider } from "./components";
+import { SearchkitProvider } from "../src/components";
 import { BrowserRouter as Router, withRouter } from "react-router-dom";
-import { App } from "./demo/App";
+import { App } from "../src/demo/App";
 
 const providerProps = {
   url: process.env.URL,
