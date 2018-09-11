@@ -21,7 +21,13 @@ export class EntityFilter extends SearchkitComponent {
   render() {
     const { title, entity, collapsed, onClick, core } = this.props;
     return (
-      <CollapsiblePanel header={title} collapsed={collapsed} onClick={onClick}>
+      <CollapsiblePanel
+        header={title}
+        collapsed={collapsed}
+        onClick={onClick}
+        duration={100}
+        renderWhenCollapsed={false}
+      >
         <Row style={{ marginBottom: "1em" }}>
           <SearchFilter
             id={`${entity}_typed`}

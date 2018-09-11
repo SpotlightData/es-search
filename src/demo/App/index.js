@@ -12,7 +12,8 @@ import {
   DateFilter,
   MentionsFilter,
   ActiveFiltersDisplay,
-  ClearFiltersDisplay
+  ClearFiltersDisplay,
+  Sorter
 } from "../../components";
 import { defaultTimeFomat } from "@spotlightdata/nanowire-extensions/lib/helpers/table";
 
@@ -44,20 +45,20 @@ export const App = () => {
         </Col>
       </Row>
       <Row>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <div style={{ width: 600 }}>
             <Row style={{ marginBottom: "1em" }}>
               <Search queryFields={["jsonLD.text"]} />
             </Row>
             <Row>
-              <HitsTable
-                columns={columns}
-                filter={n => !Object.values(n).includes(undefined)}
-              />
+              <Sorter />
+            </Row>
+            <Row>
+              <HitsTable columns={columns} />
             </Row>
           </div>
         </Col>
-        <Col span={12}>
+        <Col xs={24} md={12}>
           <div style={{ width: 374 }}>
             <Row>
               <DateFilter />
