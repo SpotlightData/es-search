@@ -1,7 +1,8 @@
 {
   "name": "@spotlightdata/es-search",
   "version": "0.0.4",
-  "main": "build/index.js",
+  "main": "build/es-search.cjs.js",
+  "module": "build/es-search.esm.js",
   "repository": "git@github.com:SpotlightData/search.git",
   "author": "Augustinas <augustinas@spotlightdata.co.uk>",
   "license": "Apache-2.0",

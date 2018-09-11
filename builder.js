@@ -9,13 +9,24 @@ const {
   configure,
 } = require('@atecake/builder');
 
+const pkg = require('./package.json');
+
 start([
   configure(),
   when('build', [
-    customise(() => ({ files: { input: 'src/components/index.js' } })),
+    customise(() => ({ files: { input: 'src/components/index.js', output: pkg.main } })),
     bundle(),
     proceed(),
-    customise(() => ({ files: { input: 'src/components' } })),
+    customise(() => ({
+      files: { input: 'src/components/index.js', output: pkg.module },
+      rollup: { format: 'esm' },
+    })),
+    bundle(),
+    proceed(),
+    customise(() => ({
+      files: { input: 'src/components', output: 'es5' },
+      rollup: { format: 'cjs' },
+    })),
     library(),
   ]),
   when('start', [devServer()]),
