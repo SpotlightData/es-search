@@ -19,13 +19,13 @@ start([
     proceed(),
     customise(() => ({
       files: { input: 'src/components/index.js', output: pkg.module },
-      rollup: { format: 'esm' },
+      build: { rollup: { format: 'esm' } },
     })),
     bundle(),
     proceed(),
     customise(() => ({
       files: { input: 'src/components', output: 'es5' },
-      rollup: { format: 'cjs' },
+      build: { rollup: { format: 'cjs' } },
     })),
     library(),
   ]),
