@@ -32,7 +32,7 @@
     "qs": "^6.5.2"
   },
   "peerDependencies": {
-    "@spotlightdata/nanowire-extensions": "1.2.0",
+    "@spotlightdata/nanowire-extensions": "1.2.6",
     "antd": "^3.9.1",
     "prop-types": "^15.6.2",
     "ramda": "^0.25.0",
