@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import { AppContainer } from "react-hot-loader";
 import { SearchkitProvider } from "../src/components";
 import { BrowserRouter as Router, withRouter } from "react-router-dom";
-import { App } from "../src/demo/App";
+import { App } from "./App";
 
 const providerProps = {
   url: process.env.URL,
@@ -26,7 +26,7 @@ const load = () => {
 };
 
 if (module.hot) {
-  module.hot.accept("./demo/App", load);
+  module.hot.accept("./App", load);
 }
 
 console.log(process.env);
