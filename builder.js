@@ -10,6 +10,7 @@ const {
   tag,
 } = require('../builder/src');
 // } = require('@atecake/builder');
+// } = require('@atecake/builder');
 
 const pkg = require('./package.json');
 
