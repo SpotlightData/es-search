@@ -1,6 +1,6 @@
 {
   "name": "@spotlightdata/es-search",
-  "version": "0.0.4",
+  "version": "test",
   "main": "build/es-search.cjs.js",
   "module": "build/es-search.esm.js",
   "repository": "git@github.com:SpotlightData/search.git",
