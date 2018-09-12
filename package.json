@@ -17,6 +17,7 @@
   "scripts": {
     "start": "DEBUG=@atecake/builder:* node builder.js start",
     "build": "DEBUG=@atecake/builder:* node builder.js build",
+    "tag-build": "DEBUG=@atecake/builder:* node builder.js tag",
     "packages": "yarn install && bash peer.sh"
   },
   "devDependencies": {
