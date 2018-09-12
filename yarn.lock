@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@atecake/builder@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@atecake/builder/-/builder-0.0.2.tgz#a3ee45a16d6248583d9eac57b04c90a9e0d99e91"
+"@atecake/builder@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@atecake/builder/-/builder-0.0.4.tgz#56173abf8723d1f6458af47fe5a589ba3eb622fd"
   dependencies:
     "@babel/core" "^7.0.0"
     "@babel/plugin-proposal-class-properties" "^7.0.0"
