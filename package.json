@@ -1,7 +1,8 @@
 {
   "name": "@spotlightdata/es-search",
-  "version": "0.0.4",
-  "main": "index.js",
+  "version": "0.0.5",
+  "main": "build/es-search.cjs.js",
+  "module": "build/es-search.esm.js",
   "repository": "git@github.com:SpotlightData/search.git",
   "author": "Augustinas <augustinas@spotlightdata.co.uk>",
   "license": "Apache-2.0",
@@ -10,23 +11,19 @@
   },
   "files": [
     "build",
-    "lib",
+    "es5",
     "index.js"
   ],
   "scripts": {
-    "start": "neutrino start",
-    "build": "neutrino build",
+    "start": "DEBUG=@atecake/builder:* node builder.js start",
+    "build": "DEBUG=@atecake/builder:* node builder.js build",
     "packages": "yarn install && bash peer.sh"
   },
   "devDependencies": {
-    "@neutrinojs/env": "^8.3.0",
-    "@neutrinojs/react-components": "^8.3.0",
-    "neutrino": "^8.3.0",
+    "@atecake/builder": "0.0.4",
     "react-dom": "^16.4.2",
     "react-hot-loader": "^4.3.5",
-    "react-router-dom": "^4.3.1",
-    "webpack": "3.12",
-    "webpack-dev-server": "^3.1.7"
+    "react-router-dom": "^4.3.1"
   },
   "dependencies": {
     "qs": "^6.5.2"
@@ -39,7 +36,6 @@
     "react": "^16.4.2",
     "react-jss": "^8.6.1",
     "searchkit": "^2.3.1-alpha.3",
-    "shortid": "^2.2.13",
-    "source-map-support": "^0.5.9"
+    "shortid": "^2.2.13"
   }
 }
