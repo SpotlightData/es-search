@@ -1,13 +1,13 @@
-import React, { PureComponent } from "react";
-import { string, number, arrayOf } from "prop-types";
+import React, { PureComponent } from 'react';
+import { string, number, arrayOf } from 'prop-types';
 
-import { Row } from "antd";
+import { Row } from 'antd';
 
-import { RangeFilter } from "searchkit";
-import { defaultTimeFormat } from "@spotlightdata/nanowire-extensions/lib/helpers/time";
-import { DatePicker } from "@spotlightdata/nanowire-extensions/lib/components/antd/DatePicker";
+import { RangeFilter } from 'searchkit';
+import { defaultTimeFormat } from '@spotlightdata/nanowire-extensions/lib/helpers/time';
+import { DatePicker } from '@spotlightdata/nanowire-extensions/lib/components/antd/DatePicker';
 
-import { RangeSliderHistogram } from "./RangeSliderHistogram";
+import { RangeSliderHistogram } from './RangeSliderHistogram';
 
 // Use this to avoid some unneded props overriding event handlers
 const dateRender = ({ minValue, maxValue, onFinished }) => (
@@ -18,13 +18,13 @@ export default class DateFilter extends PureComponent {
   static propTypes = {
     field: string,
     rangeStart: number,
-    ids: arrayOf(string)
+    ids: arrayOf(string),
   };
 
   static defaultProps = {
-    field: "jsonLD.dateCreated",
-    rangeStart: Date.parse("2010-01-01"),
-    ids: ["date1", "date2"]
+    field: 'jsonLD.dateCreated',
+    rangeStart: Date.parse('2010-01-01'),
+    ids: ['date1', 'date2'],
   };
 
   render() {
@@ -51,7 +51,7 @@ export default class DateFilter extends PureComponent {
             title=""
             field={field}
             id={ids[0]}
-            min={Date.now() - 1}
+            min={rangeStart}
             max={Date.now()}
             rangeComponent={dateRender}
           />
