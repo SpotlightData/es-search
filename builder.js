@@ -12,6 +12,21 @@ const {
 
 const pkg = require('./package.json');
 
+const { env } = process;
+
+const devConfig = {
+  compiler: {
+    env: {
+      NODE_ENV: JSON.stringify('development'),
+      URL: JSON.stringify(env.URL),
+      TOKEN: JSON.stringify(env.TOKEN),
+      PROJECT: JSON.stringify(env.PROJECT),
+    },
+  },
+};
+
+console.log(devConfig);
+
 start([
   configure(),
   when('build', [
@@ -27,6 +42,6 @@ start([
       action: Promise.resolve(),
     }),
   ]),
-  when('start', [devServer()]),
+  when('start', [devServer(devConfig)]),
   when('tag', [tag()]),
 ]);
