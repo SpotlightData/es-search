@@ -25,8 +25,6 @@ const devConfig = {
   },
 };
 
-console.log(devConfig);
-
 start([
   configure(),
   when('build', [
