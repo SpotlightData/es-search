@@ -1,6 +1,6 @@
 {
   "name": "@spotlightdata/es-search",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "main": "build/es-search.cjs.js",
   "module": "build/es-search.esm.js",
   "repository": "git@github.com:SpotlightData/search.git",
@@ -9,11 +9,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "build",
-    "es5",
-    "index.js"
-  ],
+  "files": ["build", "es5", "index.js"],
   "scripts": {
     "start": "DEBUG=@atecake/builder:* node builder.js start",
     "build": "DEBUG=@atecake/builder:* node builder.js build",
@@ -21,7 +17,7 @@
     "packages": "yarn install && bash peer.sh"
   },
   "devDependencies": {
-    "@atecake/builder": "0.0.4",
+    "@atecake/builder": "0.0.6",
     "react-dom": "^16.4.2",
     "react-hot-loader": "^4.3.5",
     "react-router-dom": "^4.3.1"

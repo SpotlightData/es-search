@@ -1,41 +1,41 @@
-import React from "react";
+import React from 'react';
 
-import { Row, Col } from "antd";
-import { Link } from "react-router-dom";
-import { Button } from "antd";
+import { Row, Col } from 'antd';
+import { Link } from 'react-router-dom';
+import { Button } from 'antd';
 
-import "antd/dist/antd.css";
+import 'antd/dist/antd.css';
 
 import {
   HitsTable,
   Search,
-  DateFilter,
+  DateFilterCollapse,
   MentionsFilter,
   ActiveFiltersDisplay,
   ClearFiltersDisplay,
-  Sorter
+  Sorter,
 } from '../../src/components';
-import { defaultTimeFomat } from "@spotlightdata/nanowire-extensions/lib/helpers/table";
+import { defaultTimeFomat } from '@spotlightdata/nanowire-extensions/lib/helpers/table';
 
 const columns = [
   {
-    title: "Title",
-    dataIndex: "name"
+    title: 'Title',
+    dataIndex: 'name',
   },
   {
-    title: "Date",
-    dataIndex: "dateCreated",
-    render: defaultTimeFomat
+    title: 'Date',
+    dataIndex: 'dateCreated',
+    render: defaultTimeFomat,
   },
   {
-    title: "File Size",
-    dataIndex: "fileSize"
-  }
+    title: 'File Size',
+    dataIndex: 'fileSize',
+  },
 ];
 
 export const App = () => {
   return (
-    <div style={{ padding: "2em", width: "100%", height: "100%" }}>
+    <div style={{ padding: '2em', width: '100%', height: '100%' }}>
       <Row>
         <Col span={6}>
           <ActiveFiltersDisplay />
@@ -47,8 +47,8 @@ export const App = () => {
       <Row>
         <Col xs={24} md={12}>
           <div style={{ width: 600 }}>
-            <Row style={{ marginBottom: "1em" }}>
-              <Search queryFields={["jsonLD.text"]} />
+            <Row style={{ marginBottom: '1em' }}>
+              <Search queryFields={['jsonLD.text']} />
             </Row>
             <Row>
               <Sorter />
@@ -60,10 +60,8 @@ export const App = () => {
         </Col>
         <Col xs={24} md={12}>
           <div style={{ width: 374 }}>
-            <Row>
-              <DateFilter />
-            </Row>
             <Row type="flex" justify="center">
+              <DateFilterCollapse />
               <MentionsFilter />
             </Row>
           </div>

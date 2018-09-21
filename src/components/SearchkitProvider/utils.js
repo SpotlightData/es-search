@@ -1,30 +1,30 @@
-import * as R from "ramda";
+import * as R from 'ramda';
 
-import qs from "qs";
+import qs from 'qs';
 import {
   queryUrlToObject,
-  queryObjectToString
-} from "@spotlightdata/nanowire-extensions/lib/helpers/request";
+  queryObjectToString,
+} from '@spotlightdata/nanowire-extensions/lib/helpers/request';
+
+const delimiter = '+';
 
 const encodeObjUrl = obj => {
-  const parsed = qs.stringify(obj, { encode: true, encodeValuesOnly: true });
-  return parsed.replace(/&/g, "+");
+  return qs.stringify(obj, { encode: true, encodeValuesOnly: false, delimiter });
 };
 const decodeObjString = str => {
-  const clean = str.replace(/\+/g, "&");
-  return qs.parse(clean);
+  return qs.parse(str, { delimiter });
 };
 
 function cleanDates(state) {
-  if (typeof state !== "object") {
+  if (typeof state !== 'object') {
     return state;
   }
   return Object.entries(state).reduce((newState, [key, value]) => {
-    const newValue = !key.includes("date")
+    const newValue = !key.includes('date')
       ? value
       : {
           min: parseInt(value.min, 10),
-          max: parseInt(value.max, 10)
+          max: parseInt(value.max, 10),
         };
     return { ...newState, [key]: newValue };
   }, {});
@@ -32,7 +32,7 @@ function cleanDates(state) {
 
 export const stateFromQuery = key =>
   R.pipe(
-    url => queryUrlToObject(url)[key] || "",
+    url => queryUrlToObject(url)[key] || '',
     decodeObjString,
     cleanDates
   );
@@ -47,7 +47,7 @@ export function updateSKHistory(history, queryKey, state) {
 
   const historyState = {
     ...history.location,
-    search
+    search,
   };
   return historyState;
 }

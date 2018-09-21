@@ -23,6 +23,17 @@ const devConfig = {
       PROJECT: JSON.stringify(env.PROJECT),
     },
   },
+  server: {
+    proxy: {
+      '/api': {
+        logLevel: 'debug',
+        changeOrigin: true,
+        pathRewrite: path => path.replace(/\/$/, ''),
+        target: env.PROXY,
+        secure: env.SECURE === 'true',
+      },
+    },
+  },
 };
 
 start([
