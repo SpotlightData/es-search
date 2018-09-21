@@ -41,7 +41,6 @@ export function updateSKHistory(history, queryKey, state) {
   const query = queryUrlToObject(history.location.search);
   const search = R.pipe(
     encodeObjUrl,
-    R.tap(console.log),
     str => R.assoc(queryKey, str, query),
     queryObjectToString
   )(state);
