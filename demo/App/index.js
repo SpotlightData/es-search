@@ -24,13 +24,8 @@ const columns = [
     dataIndex: 'name',
   },
   {
-    title: 'Date',
-    dataIndex: 'dateCreated',
-    render: defaultTimeFomat,
-  },
-  {
-    title: 'File Size',
-    dataIndex: 'fileSize',
+    title: 'Id',
+    dataIndex: '_id',
   },
 ];
 

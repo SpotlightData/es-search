@@ -36,12 +36,18 @@ export class TextSearch extends SearchkitComponent {
 		key: 'text_search',
 	};
 
-	state = { input: '', exact: false, activeFlag: undefined };
+	state = { text: '', exact: false, activeFlag: undefined, loaded: false };
 
 	componentDidUpdate(_prevProps, prevState) {
 		const newExact = this.state.exact !== prevState.exact;
 		if (newExact) {
 			this.updateAccessor();
+		}
+		// This is an alternative method to using forceupdate
+		// Only need to load once
+		const { search } = this.accessor.getState();
+		if (!this.state.loaded && search) {
+			this.setState({ ...search, loaded: true });
 		}
 	}
 
@@ -50,22 +56,22 @@ export class TextSearch extends SearchkitComponent {
 	}
 
 	updateAccessor(flag) {
-		const { input, exact } = this.state;
+		const { text, exact } = this.state;
 		// TODO throw warning if search is empty, and no flag is passed,
-		// Pass as meta to input
+		// Pass as meta to search
 		if (flag !== undefined) {
 			this.accessor.addFlag(flag);
 		}
 		this.accessor.setSearch({
 			exact,
-			text: input,
+			text: text,
 		});
 		this.searchkit.performSearch();
 	}
 
 	toggleExact = e => this.setState({ exact: e.target.checked });
 
-	updateInput = e => this.setState({ input: e.target.value });
+	updateInput = e => this.setState({ text: e.target.value });
 
 	handleKeyDown = e => {
 		const keyCode = e.which || e.keyCode;
@@ -76,20 +82,20 @@ export class TextSearch extends SearchkitComponent {
 	};
 
 	handleClick = e => {
-		const { input, exact, activeFlag } = this.state;
+		const { text, exact, activeFlag } = this.state;
 		const newFlag = {
 			exact,
-			text: input,
+			text: text,
 			flag: this.props.flags[activeFlag].key,
 		};
-		this.setState({ input: '' }, () => this.updateAccessor(newFlag));
+		this.setState({ text: '' }, () => this.updateAccessor(newFlag));
 	};
 
 	handleActiveFlag = activeFlag => this.setState({ activeFlag });
 
 	render() {
 		const { placeholder, flags } = this.props;
-		const { input, exact, activeFlag } = this.state;
+		const { text, exact, activeFlag } = this.state;
 		return (
 			<div>
 				<Row>
@@ -100,7 +106,7 @@ export class TextSearch extends SearchkitComponent {
 				<Row>
 					<Col xs={12}>
 						<Input
-							value={input}
+							value={text}
 							onChange={this.updateInput}
 							placeholder={placeholder}
 							onKeyDown={this.handleKeyDown}

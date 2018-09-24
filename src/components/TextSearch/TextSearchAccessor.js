@@ -5,7 +5,9 @@ import { StatefulAccessor, ValueState } from 'searchkit';
 
 import { TextSearchQueryBuilder } from './TextSearchQueryBuilder';
 
-const defaultSearch = { text: '', exact: false };
+// Because bools are stringified
+const clearExtract = entry => ({ ...entry, exact: entry.exact === 'true' });
+
 /*
 	NOTE:
 	If we have an id system for tracking flags
@@ -18,20 +20,19 @@ export class TextSearchAccessor extends StatefulAccessor {
 		this.state = new ValueState();
 		this.fields = fields;
 		this.flags = flags;
-		this.fromQueryObject({});
 	}
 
-	getCleanState() {
+	getState() {
 		return this.state.getValue() || {};
 	}
 
 	getFlags() {
-		return R.propOr([], 'flags', this.getCleanState());
+		return R.propOr([], 'flags', this.getState());
 	}
 
 	removeFlag(text, type) {
 		this.updateState({
-			flags: R.filter(entry => entry.text !== text && entry.flag !== type, this.getFlags()),
+			flags: R.filter(entry => !(entry.text === text && entry.flag === type), this.getFlags()),
 		});
 	}
 
@@ -41,7 +42,7 @@ export class TextSearchAccessor extends StatefulAccessor {
 
 	updateState(newState) {
 		this.state = R.pipe(
-			R.mergeDeepRight(this.getCleanState()),
+			R.mergeDeepRight(this.getState()),
 			this.state.create.bind(this.state)
 		)(newState);
 	}
@@ -50,44 +51,58 @@ export class TextSearchAccessor extends StatefulAccessor {
 		this.updateState({ flags: R.append(newFlag, this.getFlags()) });
 	}
 
-	addFilters = (state, initialQuery) => {
-		const query = R.reduce(
-			(query, entry) =>
-				query.addSelectedFilter({
-					name: this.flags[entry.flag].text,
-					value: entry.text,
-					id: this.key,
-					remove: () => this.removeFlag(entry.text, entry.flag),
-				}),
-			initialQuery,
-			state.flags
-		);
-		if (state.search.text.length !== 0) {
-			return query.addSelectedFilter({
-				name: 'SEARCH',
-				value: this.getCleanState().search.text,
-				id: this.key,
-				remove: () => this.setSearch({ search: { text: '', exact: false } }),
-			});
+	addFilters = (search, flags, initialQuery) => {
+		let query = initialQuery;
+		// if (search && search.text.length !== 0) {
+		// 	query = query.addSelectedFilter({
+		// 		name: 'text',
+		// 		value: search.text,
+		// 		id: this.key,
+		// 		remove: () => this.setSearch(undefined),
+		// 	});
+		// }
+		if (flags && flags.length !== 0) {
+			query = R.reduce(
+				(q, entry) =>
+					q.addSelectedFilter({
+						name: this.flags[entry.flag].text,
+						value: entry.text,
+						id: this.key,
+						remove: () => this.removeFlag(entry.text, entry.flag),
+					}),
+				query,
+				flags
+			);
 		}
 		return query;
 	};
 
 	fromQueryObject(ob) {
 		const value = ob[this.urlKey];
-		const search = R.propOr(defaultSearch, 'search', value);
-		const flags = R.propOr([], 'flags', value);
+		if (!value) {
+			return;
+		}
+		const search = value.search ? clearExtract(value.search) : undefined;
+		const flags = value.flags ? value.flags.map(clearExtract) : undefined;
 		this.state = this.state.setValue({ search, flags });
 	}
 
+	getQueryObject() {
+		let val = this.state.getValue();
+		return val
+			? {
+					[this.urlKey]: val,
+			  }
+			: {};
+	}
+
 	buildSharedQuery(initialQuery) {
-		const state = this.state.getValue();
-		if (!state) {
+		const { search, flags } = this.getState();
+		if (!search && !flags) {
 			return initialQuery;
 		}
-		debugger;
-		const stateQuery = TextSearchQueryBuilder(state, this.fields);
+		const stateQuery = TextSearchQueryBuilder(search, flags, this.fields);
 		const query = initialQuery.addQuery(stateQuery);
-		return this.addFilters(state, query);
+		return this.addFilters(search, flags, query);
 	}
 }
