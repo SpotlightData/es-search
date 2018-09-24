@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
 import {
   GroupedSelectedFilters,
   FilterGroupItem as SkFilterGroupItem,
-  FilterGroup as SkFilterGroup
-} from "searchkit";
-import { Tag } from "antd";
+  FilterGroup as SkFilterGroup,
+} from 'searchkit';
+import { Tag } from 'antd';
 
 const map = (ls, fn) => ls.map(fn);
 
@@ -37,9 +37,8 @@ class FilterGroup extends SkFilterGroup {
 
   render() {
     const { title, filters } = this.props;
-    return (
-      <div key={title}>{map(filters, filter => this.renderFilter(filter))}</div>
-    );
+    console.log(title, filters);
+    return <div key={title}>{map(filters, filter => this.renderFilter(filter))}</div>;
   }
 }
 

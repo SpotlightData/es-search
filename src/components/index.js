@@ -8,3 +8,4 @@ export { default as Sorter } from './Sorter';
 export { default as ExposeQuery } from './ExposeQuery';
 export * from './DateFilter';
 export * from './Search';
+export * from './TextSearch';

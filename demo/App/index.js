@@ -14,6 +14,7 @@ import {
   ActiveFiltersDisplay,
   ClearFiltersDisplay,
   Sorter,
+  TextSearch,
 } from '../../src/components';
 import { defaultTimeFomat } from '@spotlightdata/nanowire-extensions/lib/helpers/table';
 
@@ -47,6 +48,9 @@ export const App = () => {
       <Row>
         <Col xs={24} md={12}>
           <div style={{ width: 600 }}>
+            <Row style={{ marginBottom: '1em' }}>
+              <TextSearch />
+            </Row>
             <Row style={{ marginBottom: '1em' }}>
               <Search queryFields={['jsonLD.text']} />
             </Row>

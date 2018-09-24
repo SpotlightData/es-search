@@ -1,33 +1,95 @@
 import React from 'react';
-import { string, arrayOf } from 'prop-types';
+import { string, arrayOf, shape } from 'prop-types';
 
-import { Row, Input, Checkbox } from 'antd';
+import { Row, Col, Button, Input, Checkbox } from 'antd';
 import { SearchkitComponent } from 'searchkit';
 
-const makeExact = str => `"${str}"`;
-const identity = a => a;
+import { Dropdown } from '@spotlightdata/nanowire-extensions/lib/components/form/Dropdown';
+
+import { TextSearchAccessor } from './TextSearchAccessor';
+
+const firstEntry = obj => Object.values(obj)[0];
+
+const ENTER_KEY = 13;
 
 export class TextSearch extends SearchkitComponent {
 	static propTypes = {
 		fields: arrayOf(string),
 		placeholder: string,
+		flags: shape({}),
+		key: string,
 	};
 
 	static defaultProps = {
 		fields: ['jsonLD.text'],
 		placeholder: 'Search text',
+		flags: {
+			'+': {
+				key: '+',
+				text: 'AND',
+			},
+			'|': {
+				key: '|',
+				text: 'OR',
+			},
+		},
+		key: 'text_search',
 	};
 
-	state = { input: '', exact: false };
+	state = { input: '', exact: false, activeFlag: undefined };
 
-	// Should also trigger search
-	toggleExact = exact => this.setState({ exact });
+	componentDidUpdate(_prevProps, prevState) {
+		const newExact = this.state.exact !== prevState.exact;
+		if (newExact) {
+			this.updateAccessor();
+		}
+	}
+
+	defineAccessor() {
+		return new TextSearchAccessor(this.props.key, this.props.fields, this.props.flags);
+	}
+
+	updateAccessor(flag) {
+		const { input, exact } = this.state;
+		// TODO throw warning if search is empty, and no flag is passed,
+		// Pass as meta to input
+		if (flag !== undefined) {
+			this.accessor.addFlag(flag);
+		}
+		this.accessor.setSearch({
+			exact,
+			text: input,
+		});
+		this.searchkit.performSearch();
+	}
+
+	toggleExact = e => this.setState({ exact: e.target.checked });
 
 	updateInput = e => this.setState({ input: e.target.value });
 
+	handleKeyDown = e => {
+		const keyCode = e.which || e.keyCode;
+		if (keyCode !== ENTER_KEY) {
+			return;
+		}
+		this.updateAccessor(undefined);
+	};
+
+	handleClick = e => {
+		const { input, exact, activeFlag } = this.state;
+		const newFlag = {
+			exact,
+			text: input,
+			flag: this.props.flags[activeFlag].key,
+		};
+		this.setState({ input: '' }, () => this.updateAccessor(newFlag));
+	};
+
+	handleActiveFlag = activeFlag => this.setState({ activeFlag });
+
 	render() {
-		const { placeholder } = this.props;
-		const { input, exact } = this.state;
+		const { placeholder, flags } = this.props;
+		const { input, exact, activeFlag } = this.state;
 		return (
 			<div>
 				<Row>
@@ -36,7 +98,26 @@ export class TextSearch extends SearchkitComponent {
 					</Checkbox>
 				</Row>
 				<Row>
-					<Input value={input} onChange={this.updateInput} placeholder={placeholder} />
+					<Col xs={12}>
+						<Input
+							value={input}
+							onChange={this.updateInput}
+							placeholder={placeholder}
+							onKeyDown={this.handleKeyDown}
+						/>
+					</Col>
+					<Col xs={12}>
+						<Row type="flex">
+							<Dropdown
+								options={flags}
+								defaultOption={firstEntry(flags)}
+								input={{ onChange: this.handleActiveFlag, value: activeFlag }}
+							/>
+							<Button type="primary" onClick={this.handleClick}>
+								ADD
+							</Button>
+						</Row>
+					</Col>
 				</Row>
 			</div>
 		);
