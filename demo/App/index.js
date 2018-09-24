@@ -46,9 +46,6 @@ export const App = () => {
             <Row style={{ marginBottom: '1em' }}>
               <TextSearch />
             </Row>
-            <Row style={{ marginBottom: '1em' }}>
-              <Search queryFields={['jsonLD.text']} />
-            </Row>
             <Row>
               <Sorter />
             </Row>

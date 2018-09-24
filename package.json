@@ -9,7 +9,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": ["build", "es5", "index.js"],
+  "files": [
+    "build",
+    "es5",
+    "index.js"
+  ],
   "scripts": {
     "start": "DEBUG=@atecake/builder:* node builder.js start",
     "build": "DEBUG=@atecake/builder:* node builder.js build",
@@ -23,6 +27,7 @@
     "react-router-dom": "^4.3.1"
   },
   "dependencies": {
+    "lodash.throttle": "^4.1.1",
     "qs": "^6.5.2"
   },
   "peerDependencies": {

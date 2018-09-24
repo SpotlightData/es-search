@@ -1,10 +1,12 @@
 import React from 'react';
-import { string, arrayOf, shape } from 'prop-types';
+import { string, number, arrayOf, shape } from 'prop-types';
 
 import { Row, Col, Button, Input, Checkbox } from 'antd';
 import { SearchkitComponent } from 'searchkit';
 
 import { Dropdown } from '@spotlightdata/nanowire-extensions/lib/components/form/Dropdown';
+
+import throttle from 'lodash.throttle';
 
 import { TextSearchAccessor } from './TextSearchAccessor';
 
@@ -18,6 +20,7 @@ export class TextSearch extends SearchkitComponent {
 		placeholder: string,
 		flags: shape({}),
 		key: string,
+		throttle: number,
 	};
 
 	static defaultProps = {
@@ -34,7 +37,13 @@ export class TextSearch extends SearchkitComponent {
 			},
 		},
 		key: 'text_search',
+		throttle: 600,
 	};
+
+	constructor(props) {
+		super(props);
+		this.updateAccessor = throttle(this.updateAccessorFn, props.throttle);
+	}
 
 	state = { text: '', exact: false, activeFlag: undefined, loaded: false };
 
@@ -55,31 +64,28 @@ export class TextSearch extends SearchkitComponent {
 		return new TextSearchAccessor(this.props.key, this.props.fields, this.props.flags);
 	}
 
-	updateAccessor(flag) {
+	updateAccessorFn = flag => {
 		const { text, exact } = this.state;
 		// TODO throw warning if search is empty, and no flag is passed,
 		// Pass as meta to search
 		if (flag !== undefined) {
 			this.accessor.addFlag(flag);
 		}
-		this.accessor.setSearch({
-			exact,
-			text: text,
-		});
+		const newSearch =
+			text.length === 0
+				? undefined
+				: {
+						exact,
+						text: text,
+				  };
+
+		this.accessor.setSearch(newSearch);
 		this.searchkit.performSearch();
-	}
+	};
 
 	toggleExact = e => this.setState({ exact: e.target.checked });
 
-	updateInput = e => this.setState({ text: e.target.value });
-
-	handleKeyDown = e => {
-		const keyCode = e.which || e.keyCode;
-		if (keyCode !== ENTER_KEY) {
-			return;
-		}
-		this.updateAccessor(undefined);
-	};
+	updateInput = e => this.setState({ text: e.target.value }, this.updateAccessor);
 
 	handleClick = e => {
 		const { text, exact, activeFlag } = this.state;
@@ -99,18 +105,13 @@ export class TextSearch extends SearchkitComponent {
 		return (
 			<div>
 				<Row>
-					<Checkbox onChange={this.toggleExact} value={exact}>
-						Exact
+					<Checkbox onChange={this.toggleExact} checked={exact}>
+						Exact phrase
 					</Checkbox>
 				</Row>
 				<Row>
 					<Col xs={12}>
-						<Input
-							value={text}
-							onChange={this.updateInput}
-							placeholder={placeholder}
-							onKeyDown={this.handleKeyDown}
-						/>
+						<Input value={text} onChange={this.updateInput} placeholder={placeholder} />
 					</Col>
 					<Col xs={12}>
 						<Row type="flex">

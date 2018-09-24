@@ -3,7 +3,7 @@ import { StatefulAccessor, ValueState } from 'searchkit';
 
 // import sid from 'shortid';
 
-import { TextSearchQueryBuilder } from './TextSearchQueryBuilder';
+import { TextSearchQueryBuilder, formatText } from './TextSearchQueryBuilder';
 
 // Because bools are stringified
 const clearExtract = entry => ({ ...entry, exact: entry.exact === 'true' });
@@ -66,7 +66,7 @@ export class TextSearchAccessor extends StatefulAccessor {
 				(q, entry) =>
 					q.addSelectedFilter({
 						name: this.flags[entry.flag].text,
-						value: entry.text,
+						value: (entry.exact ? 'Exact phrase: ' : '') + formatText(entry.exact, entry.text),
 						id: this.key,
 						remove: () => this.removeFlag(entry.text, entry.flag),
 					}),
@@ -98,7 +98,9 @@ export class TextSearchAccessor extends StatefulAccessor {
 
 	buildSharedQuery(initialQuery) {
 		const { search, flags } = this.getState();
-		if (!search && !flags) {
+		const flagLength = R.pathOr(0, ['length'], flags);
+		const textLength = R.pathOr(0, ['text', 'length'], search);
+		if (flagLength === 0 && textLength === 0) {
 			return initialQuery;
 		}
 		const stateQuery = TextSearchQueryBuilder(search, flags, this.fields);
