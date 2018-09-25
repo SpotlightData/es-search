@@ -7,7 +7,7 @@ import { TextSearchQueryBuilder, formatText } from './TextSearchQueryBuilder';
 
 // Because bools are stringified
 const clearExtract = entry => ({ ...entry, exact: entry.exact === 'true' });
-
+const getTextLength = R.pathOr(0, ['text', 'length']);
 /*
 	NOTE:
 	If we have an id system for tracking flags
@@ -62,17 +62,16 @@ export class TextSearchAccessor extends StatefulAccessor {
 		// 	});
 		// }
 		if (flags && flags.length !== 0) {
-			query = R.reduce(
-				(q, entry) =>
-					q.addSelectedFilter({
-						name: this.flags[entry.flag].text,
-						value: (entry.exact ? 'Exact phrase: ' : '') + formatText(entry.exact, entry.text),
-						id: this.key,
-						remove: () => this.removeFlag(entry.text, entry.flag),
-					}),
-				query,
-				flags
-			);
+			query = flags.reduce((q, entry, index) => {
+				const hideName = getTextLength(search) === 0 && index === 0;
+				return q.addSelectedFilter({
+					// name: hideName ? '' : this.flags[entry.flag].text,
+					name: this.flags[entry.flag].text,
+					value: (entry.exact ? 'Exact phrase: ' : '') + formatText(entry.exact, entry.text),
+					id: this.key,
+					remove: () => this.removeFlag(entry.text, entry.flag),
+				});
+			}, query);
 		}
 		return query;
 	};
@@ -99,7 +98,7 @@ export class TextSearchAccessor extends StatefulAccessor {
 	buildSharedQuery(initialQuery) {
 		const { search, flags } = this.getState();
 		const flagLength = R.pathOr(0, ['length'], flags);
-		const textLength = R.pathOr(0, ['text', 'length'], search);
+		const textLength = getTextLength(search);
 		if (flagLength === 0 && textLength === 0) {
 			return initialQuery;
 		}

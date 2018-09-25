@@ -33,18 +33,24 @@ export const App = () => {
   return (
     <div style={{ padding: '2em', width: '100%', height: '100%' }}>
       <Row>
-        <Col span={6}>
-          <ActiveFiltersDisplay />
-        </Col>
-        <Col span={6}>
-          <ClearFiltersDisplay />
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={24} md={12}>
-          <div style={{ width: 600 }}>
+        <Col xs={24} md={16}>
+          <div>
             <Row style={{ marginBottom: '1em' }}>
-              <TextSearch />
+              <Col span={12}>
+                <TextSearch />
+              </Col>
+              <Col span={12}>
+                <Row>
+                  <Col span={12}>
+                    <Row type="flex">
+                      <ActiveFiltersDisplay />
+                    </Row>
+                  </Col>
+                  <Col span={12}>
+                    <ClearFiltersDisplay />
+                  </Col>
+                </Row>
+              </Col>
             </Row>
             <Row>
               <Sorter />
@@ -54,7 +60,7 @@ export const App = () => {
             </Row>
           </div>
         </Col>
-        <Col xs={24} md={12}>
+        <Col xs={24} md={8}>
           <div style={{ width: 374 }}>
             <Row type="flex" justify="center">
               <DateFilterCollapse />

@@ -12,9 +12,10 @@ const map = (ls, fn) => ls.map(fn);
 class FilterGroupItem extends SkFilterGroupItem {
   render() {
     const { label, prefix } = this.props;
+    const showSeperator = prefix && typeof prefix === 'string' && prefix.length !== 0;
     return (
       <Tag closable onClose={this.removeFilter} color="#108ee9">
-        {prefix} | {label}
+        {prefix} {showSeperator ? '|' : null} {label}
       </Tag>
     );
   }

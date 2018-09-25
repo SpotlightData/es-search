@@ -1,10 +1,11 @@
 import React from 'react';
 import { string, number, arrayOf, shape } from 'prop-types';
 
-import { Row, Col, Button, Input, Checkbox } from 'antd';
+import { Row, Col, Button, Checkbox } from 'antd';
 import { SearchkitComponent } from 'searchkit';
 
 import { Dropdown } from '@spotlightdata/nanowire-extensions/lib/components/form/Dropdown';
+import { TextField } from '@spotlightdata/nanowire-extensions/lib/components/form/TextField';
 
 import throttle from 'lodash.throttle';
 
@@ -45,7 +46,7 @@ export class TextSearch extends SearchkitComponent {
 		this.updateAccessor = throttle(this.updateAccessorFn, props.throttle);
 	}
 
-	state = { text: '', exact: false, activeFlag: undefined, loaded: false };
+	state = { text: '', exact: true, activeFlag: undefined, loaded: false, meta: {} };
 
 	componentDidUpdate(_prevProps, prevState) {
 		const newExact = this.state.exact !== prevState.exact;
@@ -65,9 +66,13 @@ export class TextSearch extends SearchkitComponent {
 	}
 
 	updateAccessorFn = flag => {
-		const { text, exact } = this.state;
-		// TODO throw warning if search is empty, and no flag is passed,
-		// Pass as meta to search
+		const { text, exact, meta, activeFlag } = this.state;
+
+		// Clear previous error
+		if (Object.keys(meta).length !== 0) {
+			this.setState({ meta: {} });
+		}
+
 		if (flag !== undefined) {
 			this.accessor.addFlag(flag);
 		}
@@ -77,6 +82,7 @@ export class TextSearch extends SearchkitComponent {
 				: {
 						exact,
 						text: text,
+						flag: activeFlag,
 				  };
 
 		this.accessor.setSearch(newSearch);
@@ -89,6 +95,15 @@ export class TextSearch extends SearchkitComponent {
 
 	handleClick = e => {
 		const { text, exact, activeFlag } = this.state;
+
+		if (text.length === 0) {
+			return this.setState({
+				meta: {
+					error: 'Search text empty',
+				},
+			});
+		}
+
 		const newFlag = {
 			exact,
 			text: text,
@@ -101,7 +116,7 @@ export class TextSearch extends SearchkitComponent {
 
 	render() {
 		const { placeholder, flags } = this.props;
-		const { text, exact, activeFlag } = this.state;
+		const { text, exact, activeFlag, meta } = this.state;
 		return (
 			<div>
 				<Row>
@@ -111,19 +126,23 @@ export class TextSearch extends SearchkitComponent {
 				</Row>
 				<Row>
 					<Col xs={12}>
-						<Input value={text} onChange={this.updateInput} placeholder={placeholder} />
-					</Col>
-					<Col xs={12}>
 						<Row type="flex">
 							<Dropdown
 								options={flags}
 								defaultOption={firstEntry(flags)}
 								input={{ onChange: this.handleActiveFlag, value: activeFlag }}
 							/>
-							<Button type="primary" onClick={this.handleClick}>
-								ADD
-							</Button>
+							<TextField
+								input={{ value: text, onChange: this.updateInput }}
+								placeholder={placeholder}
+								meta={meta}
+							/>
 						</Row>
+					</Col>
+					<Col xs={12}>
+						<Button type="primary" onClick={this.handleClick}>
+							ADD
+						</Button>
 					</Col>
 				</Row>
 			</div>
