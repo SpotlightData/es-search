@@ -1,5 +1,5 @@
 import React from 'react';
-import { string, number, arrayOf, shape } from 'prop-types';
+import { string, number, arrayOf, shape, func } from 'prop-types';
 
 import { Row, Col, Button, Checkbox } from 'antd';
 import { SearchkitComponent } from 'searchkit';
@@ -29,6 +29,7 @@ class TextSearchBare extends SearchkitComponent {
 			topRow: string.isRequired,
 			padded: string.isRequired,
 		}).isRequired,
+		customRender: func,
 	};
 
 	static defaultProps = {
@@ -47,6 +48,7 @@ class TextSearchBare extends SearchkitComponent {
 		title: 'text_search',
 		throttle: 600,
 		className: '',
+		customRender: undefined,
 	};
 
 	constructor(props) {
@@ -123,38 +125,56 @@ class TextSearchBare extends SearchkitComponent {
 	handleActiveFlag = activeFlag => this.setState({ activeFlag });
 
 	render() {
-		const { placeholder, flags, classes, className } = this.props;
+		const { placeholder, flags, classes, className, customRender } = this.props;
 		const { text, exact, activeFlag, meta } = this.state;
+
+		const checkbox = (
+			<Checkbox onChange={this.toggleExact} checked={exact}>
+				Exact phrase
+			</Checkbox>
+		);
+		const dropdown = (
+			<Dropdown
+				options={flags}
+				defaultOption={firstEntry(flags)}
+				input={{ onChange: this.handleActiveFlag, value: activeFlag }}
+			/>
+		);
+
+		const textField = (
+			<TextField
+				input={{ value: text, onChange: this.updateInput }}
+				placeholder={placeholder}
+				meta={meta}
+			/>
+		);
+
+		const button = (
+			<Button type="primary" onClick={this.handleClick}>
+				ADD
+			</Button>
+		);
+
+		if (customRender) {
+			return customRender({ checkbox, dropdown, textField, button });
+		}
+
 		return (
 			<div className={className}>
-				<Row className={classes.topRow}>
-					<Checkbox onChange={this.toggleExact} checked={exact}>
-						Exact phrase
-					</Checkbox>
-				</Row>
+				<Row className={classes.topRow}>{checkbox} </Row>
 				<Row>
-					<Col xs={24} md={16} className={classes.padded}>
-						<Row type="flex">
-							<Col span={6}>
-								<Dropdown
-									options={flags}
-									defaultOption={firstEntry(flags)}
-									input={{ onChange: this.handleActiveFlag, value: activeFlag }}
-								/>
+					<Col xs={24} md={20}>
+						<Row>
+							<Col xs={4} md={6}>
+								{dropdown}
 							</Col>
-							<Col span={18}>
-								<TextField
-									input={{ value: text, onChange: this.updateInput }}
-									placeholder={placeholder}
-									meta={meta}
-								/>
+							<Col xs={20} md={18}>
+								{textField}
 							</Col>
 						</Row>
 					</Col>
-					<Col xs={24} md={6}>
-						<Button type="primary" onClick={this.handleClick}>
-							ADD
-						</Button>
+					<Col xs={24} md={4}>
+						<div style={{ float: 'right' }}>{button}</div>
 					</Col>
 				</Row>
 			</div>
