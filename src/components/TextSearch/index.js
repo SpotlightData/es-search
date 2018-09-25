@@ -8,20 +8,27 @@ import { Dropdown } from '@spotlightdata/nanowire-extensions/lib/components/form
 import { TextField } from '@spotlightdata/nanowire-extensions/lib/components/form/TextField';
 
 import throttle from 'lodash.throttle';
+import injectSheets from 'react-jss';
 
 import { TextSearchAccessor } from './TextSearchAccessor';
+import style from './style';
 
 const firstEntry = obj => Object.values(obj)[0];
 
 const ENTER_KEY = 13;
 
-export class TextSearch extends SearchkitComponent {
+class TextSearchBare extends SearchkitComponent {
 	static propTypes = {
 		fields: arrayOf(string),
 		placeholder: string,
 		flags: shape({}),
-		key: string,
+		title: string,
 		throttle: number,
+		className: string,
+		classes: shape({
+			topRow: string.isRequired,
+			padded: string.isRequired,
+		}).isRequired,
 	};
 
 	static defaultProps = {
@@ -37,8 +44,9 @@ export class TextSearch extends SearchkitComponent {
 				text: 'OR',
 			},
 		},
-		key: 'text_search',
+		title: 'text_search',
 		throttle: 600,
+		className: '',
 	};
 
 	constructor(props) {
@@ -62,7 +70,7 @@ export class TextSearch extends SearchkitComponent {
 	}
 
 	defineAccessor() {
-		return new TextSearchAccessor(this.props.key, this.props.fields, this.props.flags);
+		return new TextSearchAccessor(this.props.title, this.props.fields, this.props.flags);
 	}
 
 	updateAccessorFn = flag => {
@@ -115,31 +123,35 @@ export class TextSearch extends SearchkitComponent {
 	handleActiveFlag = activeFlag => this.setState({ activeFlag });
 
 	render() {
-		const { placeholder, flags } = this.props;
+		const { placeholder, flags, classes, className } = this.props;
 		const { text, exact, activeFlag, meta } = this.state;
 		return (
-			<div>
-				<Row>
+			<div className={className}>
+				<Row className={classes.topRow}>
 					<Checkbox onChange={this.toggleExact} checked={exact}>
 						Exact phrase
 					</Checkbox>
 				</Row>
 				<Row>
-					<Col xs={12}>
+					<Col xs={24} md={16} className={classes.padded}>
 						<Row type="flex">
-							<Dropdown
-								options={flags}
-								defaultOption={firstEntry(flags)}
-								input={{ onChange: this.handleActiveFlag, value: activeFlag }}
-							/>
-							<TextField
-								input={{ value: text, onChange: this.updateInput }}
-								placeholder={placeholder}
-								meta={meta}
-							/>
+							<Col span={6}>
+								<Dropdown
+									options={flags}
+									defaultOption={firstEntry(flags)}
+									input={{ onChange: this.handleActiveFlag, value: activeFlag }}
+								/>
+							</Col>
+							<Col span={18}>
+								<TextField
+									input={{ value: text, onChange: this.updateInput }}
+									placeholder={placeholder}
+									meta={meta}
+								/>
+							</Col>
 						</Row>
 					</Col>
-					<Col xs={12}>
+					<Col xs={24} md={6}>
 						<Button type="primary" onClick={this.handleClick}>
 							ADD
 						</Button>
@@ -149,3 +161,5 @@ export class TextSearch extends SearchkitComponent {
 		);
 	}
 }
+
+export const TextSearch = injectSheets(style)(TextSearchBare);
