@@ -1,6 +1,6 @@
 {
   "name": "@spotlightdata/es-search",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "build/es-search.cjs.js",
   "module": "build/es-search.esm.js",
   "repository": "git@github.com:SpotlightData/search.git",
@@ -9,11 +9,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "files": [
-    "build",
-    "es5",
-    "index.js"
-  ],
+  "files": ["build", "es5", "index.js"],
   "scripts": {
     "start": "DEBUG=@atecake/builder:* node builder.js start",
     "build": "DEBUG=@atecake/builder:* node builder.js build",
