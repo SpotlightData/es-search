@@ -33,6 +33,7 @@ const devConfig = {
         secure: env.SECURE === 'true',
       },
     },
+    host: '0.0.0.0',
   },
 };
 

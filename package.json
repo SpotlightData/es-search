@@ -1,6 +1,6 @@
 {
   "name": "@spotlightdata/es-search",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": "build/es-search.cjs.js",
   "module": "build/es-search.esm.js",
   "repository": "git@github.com:SpotlightData/search.git",
@@ -23,6 +23,7 @@
     "react-router-dom": "^4.3.1"
   },
   "dependencies": {
+    "lodash.throttle": "^4.1.1",
     "qs": "^6.5.2"
   },
   "peerDependencies": {

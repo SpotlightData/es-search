@@ -1,20 +1,21 @@
-import React from "react";
+import React from 'react';
 
 import {
   GroupedSelectedFilters,
   FilterGroupItem as SkFilterGroupItem,
-  FilterGroup as SkFilterGroup
-} from "searchkit";
-import { Tag } from "antd";
+  FilterGroup as SkFilterGroup,
+} from 'searchkit';
+import { Tag } from 'antd';
 
 const map = (ls, fn) => ls.map(fn);
 
 class FilterGroupItem extends SkFilterGroupItem {
   render() {
-    const { label } = this.props;
+    const { label, prefix } = this.props;
+    const showSeperator = prefix && typeof prefix === 'string' && prefix.length !== 0;
     return (
       <Tag closable onClose={this.removeFilter} color="#108ee9">
-        {label}
+        {prefix} {showSeperator ? '|' : null} {label}
       </Tag>
     );
   }
@@ -23,13 +24,13 @@ class FilterGroupItem extends SkFilterGroupItem {
 class FilterGroup extends SkFilterGroup {
   renderFilter(filter) {
     const { translate, removeFilter } = this.props;
-    // console.log(filter);
     return (
       <FilterGroupItem
         key={filter.value}
         itemKey={filter.value}
         filter={filter}
         label={translate(filter.value)}
+        prefix={filter.name}
         removeFilter={removeFilter}
       />
     );
@@ -37,9 +38,7 @@ class FilterGroup extends SkFilterGroup {
 
   render() {
     const { title, filters } = this.props;
-    return (
-      <div key={title}>{map(filters, filter => this.renderFilter(filter))}</div>
-    );
+    return <div key={title}>{map(filters, filter => this.renderFilter(filter))}</div>;
   }
 }
 

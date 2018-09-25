@@ -5,9 +5,9 @@ import {
   CardinalityMetric,
   TermQuery,
   BoolMust,
-  BoolMustNot
-} from "searchkit";
-import { MapState, stateEnum } from "./State";
+  BoolMustNot,
+} from 'searchkit';
+import { MapState, stateEnum } from './State';
 
 const map = (ls, fn) => ls.map(fn);
 const each = map;
@@ -30,13 +30,7 @@ export class RefinementAccessor extends FacetAccessor {
 
   getRawBuckets() {
     return this.getAggregations(
-      [
-        this.uuid,
-        this.fieldContext.getAggregationPath(),
-        "entityFilter",
-        this.key,
-        "buckets"
-      ],
+      [this.uuid, this.fieldContext.getAggregationPath(), 'entityFilter', this.key, 'buckets'],
       []
     );
   }
@@ -60,22 +54,14 @@ export class RefinementAccessor extends FacetAccessor {
         missingFilters.push({ key: filterKey, missing: true, selected: true });
       }
     });
-    const buckets =
-      missingFilters.length > 0
-        ? missingFilters.concat(rawBuckets)
-        : rawBuckets;
+    const buckets = missingFilters.length > 0 ? missingFilters.concat(rawBuckets) : rawBuckets;
 
     return buckets;
   }
 
   getDocCount() {
     return this.getAggregations(
-      [
-        this.uuid,
-        this.fieldContext.getAggregationPath(),
-        "entityFilter",
-        "doc_count"
-      ],
+      [this.uuid, this.fieldContext.getAggregationPath(), 'entityFilter', 'doc_count'],
       0
     );
   }
@@ -85,9 +71,9 @@ export class RefinementAccessor extends FacetAccessor {
       [
         this.uuid,
         this.fieldContext.getAggregationPath(),
-        "entityFilter",
+        'entityFilter',
         `${this.key}_count`,
-        "value"
+        'value',
       ],
       0
     );
@@ -101,14 +87,14 @@ export class RefinementAccessor extends FacetAccessor {
   }
 
   getLessSizeOption() {
-    let option = { size: 0, label: "" };
+    let option = { size: 0, label: '' };
     const total = this.getCount();
     const { facetsPerPage } = this.options;
 
     if (this.size - facetsPerPage >= this.defaultSize) {
       return {
         size: this.size - facetsPerPage,
-        label: this.translate("facets.view_less")
+        label: this.translate('facets.view_less'),
       };
     } else if (total) {
       return null;
@@ -127,10 +113,8 @@ export class RefinementAccessor extends FacetAccessor {
         query.getFiltersWithoutKeys(excludedKey),
         ...this.fieldContext.wrapAggregations(
           FilterBucket(
-            "entityFilter",
-            BoolMust(
-              TermQuery("jsonLD.mentions.@type.keyword", this.options.entity)
-            ),
+            'entityFilter',
+            BoolMust(TermQuery('jsonLD.mentions.@type.keyword', this.options.entity)),
             TermsBucket(
               this.key,
               this.options.actualField,
@@ -140,7 +124,7 @@ export class RefinementAccessor extends FacetAccessor {
                   order: this.getOrder(),
                   include: this.options.include,
                   exclude: this.options.exclude,
-                  min_doc_count: this.options.min_doc_count
+                  min_doc_count: this.options.min_doc_count,
                 },
                 isUndefined
               )
@@ -157,12 +141,8 @@ export class RefinementAccessor extends FacetAccessor {
     const filters = Object.keys(state);
 
     // these are for the elasticsearch query
-    const onFilters = filters.filter(filter =>
-      this.state.isValue(filter, stateEnum.ON)
-    );
-    const notFilters = filters.filter(filter =>
-      this.state.isValue(filter, stateEnum.NOT)
-    );
+    const onFilters = filters.filter(filter => this.state.isValue(filter, stateEnum.ON));
+    const notFilters = filters.filter(filter => this.state.isValue(filter, stateEnum.NOT));
 
     const onFilterTerms = map(onFilters, filter =>
       this.fieldContext.wrapFilter(TermQuery(this.options.actualField, filter))
@@ -173,18 +153,18 @@ export class RefinementAccessor extends FacetAccessor {
 
     // these are for displaying to the user
     const generateDisplayedFilters = (fs, prefix) => {
-      const prefixString = prefix ? `${prefix} ` : "";
+      const prefixString = prefix ? `${prefix} ` : '';
       return map(fs, filter => ({
-        name: this.options.title || this.translate(this.options.field),
+        name: this.options.entity,
         value: prefixString + this.translate(filter),
         id: this.options.id,
         remove: () => {
           this.state = this.state.remove(filter);
-        }
+        },
       }));
     };
     const selectedFilters = generateDisplayedFilters(onFilters).concat(
-      generateDisplayedFilters(notFilters, "NOT")
+      generateDisplayedFilters(notFilters, 'NOT')
     );
 
     // returns BoolMust or BoolShould depending if we specified AND or OR
