@@ -53,25 +53,24 @@ export class TextSearchAccessor extends StatefulAccessor {
 
 	addFilters = (search, flags, initialQuery) => {
 		let query = initialQuery;
-		// if (search && search.text.length !== 0) {
-		// 	query = query.addSelectedFilter({
-		// 		name: 'text',
-		// 		value: search.text,
-		// 		id: this.key,
-		// 		remove: () => this.setSearch(undefined),
-		// 	});
-		// }
-		if (flags && flags.length !== 0) {
+		const hasFlags = flags && flags.length !== 0;
+		if (hasFlags) {
 			query = flags.reduce((q, entry, index) => {
-				const hideName = getTextLength(search) === 0 && index === 0;
 				return q.addSelectedFilter({
-					// name: hideName ? '' : this.flags[entry.flag].text,
-					name: this.flags[entry.flag].text,
+					name: index === 0 ? 'Text query' : this.flags[entry.flag].text,
 					value: (entry.exact ? 'Exact phrase: ' : '') + formatText(entry.exact, entry.text),
 					id: this.key,
 					remove: () => this.removeFlag(entry.text, entry.flag),
 				});
 			}, query);
+		}
+		if (search && search.text.length !== 0) {
+			query = query.addSelectedFilter({
+				name: hasFlags ? this.flags[search.flag].text : 'Text query',
+				value: formatText(search.exact, search.text),
+				id: this.key,
+				remove: () => this.setSearch(undefined),
+			});
 		}
 		return query;
 	};
